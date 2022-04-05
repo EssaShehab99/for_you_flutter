@@ -1,0 +1,12 @@
+{
+  "title-desc": "Your health service works without it:",
+  "details-desc": "The patient must register his disease data in the so-called medical history, so that the data is linked from accredited agencies that help him in emergency cases and help him in a quick time and be developed with services and conduct periodic examinations that help him in the life of the individual and reduce the health risks of the individual.",
+  "skip": "Skip",
+  "phone-number": "Phone Number",
+  "password": "Password",
+  "sign-in": "Sign In",
+  "sign-in-by-finger": "Sign In By Fingerprint",
+  "has-not-account": "Don't have an account? Create an account",
+  "validate-value": "Please enter a valid value",
+  "slide-fingerprint": "Slide your fingerprint to enter"
+}
