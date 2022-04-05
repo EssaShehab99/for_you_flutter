@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:for_you_flutter/constants/constant_values.dart';
 
 import '../styles/colors_app.dart';
 
@@ -13,7 +14,7 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: ConstantValues.padding*0.5),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           color: Colors.white,
@@ -23,7 +24,6 @@ class TextInput extends StatelessWidget {
               spreadRadius: 1
           )]
       ),
-      padding: EdgeInsets.only(left: 10),
       child: TextFormField(
         validator: validator,
         controller: controller,

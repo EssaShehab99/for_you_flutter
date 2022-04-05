@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:for_you_flutter/modules/questionnaires_screen.dart';
+import 'package:for_you_flutter/shared/dropdown_input.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 
 import '../constants/constant_images.dart';
@@ -43,9 +45,8 @@ class SignUp extends StatelessWidget {
                   )),
               Flexible(
                   child: Form(
-                    key: _formKey,
-
-                    child: Column(
+                key: _formKey,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextInput(
@@ -75,15 +76,7 @@ class SignUp extends StatelessWidget {
                         },
                         controller: phoneController,
                         hint: "age".tr()),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: phoneController,
-                        hint: "gender".tr()),
+                    DropdownInput(items: ["man".tr(),"woman".tr()],hint: "gender".tr(),onChanged: (value){}),
                     TextInput(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -102,6 +95,8 @@ class SignUp extends StatelessWidget {
                         },
                         controller: phoneController,
                         hint: "weight".tr()),
+                    DropdownInput(items: ["A+","A-","B+","A-","O+","O-","AB"],hint: "blood-type".tr(),onChanged: (value){}),
+                    DropdownInput(items: ["married".tr(),"celibate".tr(),"widower".tr()],hint: "social-status".tr(),onChanged: (value){}),
                     TextInput(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -110,7 +105,9 @@ class SignUp extends StatelessWidget {
                           return null;
                         },
                         controller: phoneController,
-                        hint: "blood-type".tr()),
+                        hint: "password".tr(),
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true),
                     TextInput(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -119,37 +116,28 @@ class SignUp extends StatelessWidget {
                           return null;
                         },
                         controller: phoneController,
-                        hint: "social-status".tr()),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
+                        hint: "confirm".tr(),
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true),
+                    Components.MainButton(
+                        children: [
+                          Text(
+                            "next".tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(color: ColorsApp.white),
+                          )
+                        ],
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QuestionnairesScreen(),
+                                ));
                           }
-                          return null;
-                        },
-                        controller: phoneController,
-                        hint: "password".tr(),keyboardType: TextInputType.visiblePassword,obscureText: true),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: phoneController,
-                        hint: "confirm".tr(),keyboardType: TextInputType.visiblePassword,obscureText: true),
-                    Components.MainButton(children: [
-                      Text(
-                        "next".tr(),
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(color: ColorsApp.white),
-                      )
-                    ], onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      }
-                    }),
+                        }),
                     SizedBox(
                       height: 10,
                     ),

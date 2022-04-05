@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:for_you_flutter/constants/constant_values.dart';
+import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/data/setting/config.dart';
 import 'package:for_you_flutter/modules/sign_in.dart';
 import 'package:for_you_flutter/styles/theme_app.dart';
@@ -8,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import 'data/providers/app_state_manager.dart';
 import 'modules/description.dart';
+import 'modules/questionnaires_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +32,12 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => AppStateManager()),
+      ChangeNotifierProvider(create: (context) => QuestionnairesManager()..setItems(ConstantValues.questionnaireList)),
     ],child: Consumer<AppStateManager>(
       builder: (context, value, child) {
         Config.getLocal(context);
         return MaterialApp(
-        home: SafeArea(child: SignIn()),
+        home: SafeArea(child: QuestionnairesScreen()),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
