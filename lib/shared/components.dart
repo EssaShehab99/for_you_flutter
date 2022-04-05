@@ -11,7 +11,7 @@ class Components {
         margin: EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Colors.white,
+            color: ColorsApp.primary,
             boxShadow: [
               BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
             ]),

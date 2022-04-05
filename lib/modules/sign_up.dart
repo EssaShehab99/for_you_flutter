@@ -10,9 +10,10 @@ import '../shared/locale_switch.dart';
 import '../shared/text_input.dart';
 
 class SignUp extends StatelessWidget {
-   SignUp({Key? key}) : super(key: key);
- final TextEditingController phoneController=TextEditingController();
- final TextEditingController passwordController=TextEditingController();
+  SignUp({Key? key}) : super(key: key);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,23 +35,136 @@ class SignUp extends StatelessWidget {
               Flexible(
                   flex: 3,
                   child: Center(
-                    child: SvgPicture.asset(ConstantImage.logo,
-                        width: double.infinity,height: 200,),
+                    child: SvgPicture.asset(
+                      ConstantImage.logo,
+                      width: double.infinity,
+                      height: 200,
+                    ),
                   )),
               Flexible(
                   child: Form(
-                child: Column(
+                    key: _formKey,
+
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextInput(controller: phoneController,hint: "phone-number".tr(), icon: Icons.person),
-                    TextInput(controller: passwordController,hint: "password".tr(), icon: Icons.email),
-                    Components.MainButton(children: [Text("sign-in".tr(),style: Theme.of(context).textTheme.bodyText1,)],onTap:(){}),
-                    Components.MainButton(children: [Icon(Icons.fingerprint,color: ColorsApp.primary,size: 35),SizedBox(width: 20,),Text("sign-in-by-finger".tr(),style: Theme.of(context).textTheme.bodyText1,)], onTap: () {}),
-                    SizedBox(height: 10,),
-                    TextButton(onPressed: (){
-                      Navigator.pop(context);
-                    }, child: Text("has-not-account".tr(),
-                      style: Theme.of(context).textTheme.bodyText1,),style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.0))),)
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: nameController,
+                        hint: "name".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "phone-number".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "age".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "gender".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "height".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "weight".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "blood-type".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "social-status".tr()),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "password".tr(),keyboardType: TextInputType.visiblePassword,obscureText: true),
+                    TextInput(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'validate-value'.tr();
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        hint: "confirm".tr(),keyboardType: TextInputType.visiblePassword,obscureText: true),
+                    Components.MainButton(children: [
+                      Text(
+                        "next".tr(),
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(color: ColorsApp.white),
+                      )
+                    ], onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Processing Data')),
+                        );
+                      }
+                    }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "has-account".tr(),
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(
+                              Colors.white.withOpacity(0.0))),
+                    )
                   ],
                 ),
               ))

@@ -8,5 +8,15 @@
   "sign-in-by-finger": "Sign In By Fingerprint",
   "has-not-account": "Don't have an account? Create an account",
   "validate-value": "Please enter a valid value",
-  "slide-fingerprint": "Slide your fingerprint to enter"
+  "slide-fingerprint": "Slide your fingerprint to enter",
+  "has-account": "you have an account? sign in",
+  "name": "Name",
+  "age": "Age",
+  "gender": "Gender",
+  "height": "Height - 1.75m",
+  "weight": "Weight - 65km",
+  "blood-type": "Blood Type",
+  "social-status": "Social Status",
+  "confirm": "Confirm Password",
+  "next": "Next"
 }

@@ -54,10 +54,13 @@ class SignIn extends StatelessWidget {
                         }
                         return null;
                       },
+                      keyboardType:TextInputType.phone ,
                       controller: phoneController,
                       hint: "phone-number".tr(),
                       icon: Icons.phone_android),
                   TextInput(
+                      keyboardType:TextInputType.visiblePassword ,
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'validate-value'.tr();
@@ -71,13 +74,11 @@ class SignIn extends StatelessWidget {
                       children: [
                         Text(
                           "sign-in".tr(),
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyText1?.copyWith(color: ColorsApp.white),
                         )
                       ],
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing Data')),
                           );
@@ -86,13 +87,13 @@ class SignIn extends StatelessWidget {
                   Components.MainButton(
                       children: [
                         Icon(Icons.fingerprint,
-                            color: ColorsApp.primary, size: 35),
+                            color: ColorsApp.white, size: 35),
                         SizedBox(
                           width: 20,
                         ),
                         Text(
                           "sign-in-by-finger".tr(),
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyText1?.copyWith(color: ColorsApp.white),
                         )
                       ],
                       onTap: () {
