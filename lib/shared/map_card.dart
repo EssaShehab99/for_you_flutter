@@ -1,82 +1,97 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:for_you_flutter/constants/constant_images.dart';
+import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
-class MapCard extends StatelessWidget {
-   MapCard({Key? key}) : super(key: key);
+class MapCard extends StatefulWidget {
+ const MapCard({Key? key,this.onTapMap,this.initialPosition}) : super(key: key);
+  final LatLng? initialPosition;
+  final ArgumentCallback<LatLng>? onTapMap;
+  @override
+  State<MapCard> createState() => _MapCardState();
+}
 
-  Completer<GoogleMapController> _controller = Completer();
+class _MapCardState extends State<MapCard> {
+  List<Marker> markers = [];
+late  Completer<GoogleMapController> _controller ;
+late  CameraPosition initialCameraPosition ;
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(24.787741144127505, 46.30174386769324),
-    zoom: 3,
-  );
+  Future<void> checkPermission() async {
+    Location location = new Location();
 
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(24.787741144127505, 46.30174386769324),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
 
-   // Future<void> checkPermission() async {
-   //   Location location = new Location();
-   //
-   //   bool _serviceEnabled;
-   //   PermissionStatus _permissionGranted;
-   //
-   //   _serviceEnabled = await location.serviceEnabled();
-   //   if (!_serviceEnabled) {
-   //     _serviceEnabled = await location.requestService();
-   //     if (!_serviceEnabled) {
-   //       return;
-   //     }
-   //   }
-   //
-   //   _permissionGranted = await location.hasPermission();
-   //   if (_permissionGranted == PermissionStatus.denied) {
-   //     _permissionGranted = await location.requestPermission();
-   //     if (_permissionGranted != PermissionStatus.granted) {
-   //       return;
-   //     }
-   //   }
-   //
-   //   // _locationData = await location.getLocation();
-   //   location.getLocation().then((value) {
-   //     setState(() {
-   //       _locationData = value;
-   //       // _kGooglePlex.target=_locationData;
-   //     });
-   //   });
-   // }
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    location.getLocation().then((value) {});
+  }
+
+  _handleTap(LatLng point) {
+    setState(() {
+      markers.add(Marker(
+        markerId: MarkerId("1"),
+        position: point,
+        infoWindow: InfoWindow(
+          title: 'hospital-location'.tr(),
+        ),
+      ));
+     widget.onTapMap!(point);
+    });
+  }
+
+  @override
+  void initState() {
+    checkPermission();
+    _controller = Completer();
+     initialCameraPosition = CameraPosition(
+      target: widget.initialPosition??LatLng(24.71320026053638, 46.67536760671966),
+      zoom: 15,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-      mapType: MapType.hybrid,
-      zoomControlsEnabled: false,
+      markers: Set<Marker>.of(markers),
+      mapType: MapType.normal,
+      zoomControlsEnabled: true,
       myLocationButtonEnabled: true,
       myLocationEnabled: true,
       gestureRecognizers: Set()
         ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-        ..add(Factory<ScaleGestureRecognizer>(
-                () => ScaleGestureRecognizer()))
+        ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
         ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
         ..add(Factory<VerticalDragGestureRecognizer>(
-                () => VerticalDragGestureRecognizer())),
-
-      initialCameraPosition: _kGooglePlex,
+            () => VerticalDragGestureRecognizer())),
+      initialCameraPosition: initialCameraPosition,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
-      onTap: (value){
-        print(value);
-      },
+      onTap: _handleTap,
     );
   }
 }

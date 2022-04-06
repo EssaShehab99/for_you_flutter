@@ -15,7 +15,9 @@ class HospitalManager extends ChangeNotifier{
   void initial(List<Hospital> hospital){
     this._hospitalList.addAll(hospital);
   }
-  void setCheck(int index){
-    _hospitalList[index].isChecked=true;
+  void setCheck(int index,bool value){
+    _hospitalList[index].isChecked=value;
+    print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    notifyListeners();
   }
 }

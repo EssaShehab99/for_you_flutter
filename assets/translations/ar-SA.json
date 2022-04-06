@@ -61,5 +61,7 @@
   "hospital-7": "مستشفى الملك عبدالعزيز الجامعي",
   "hospital-8": "قوى الامن",
   "another": "غير ذالك",
-  "associated-hospitals": "المستشفيات المرتبطة"
+  "associated-hospitals": "المستشفيات المرتبطة",
+  "hospital-location": "موقع المستشفى",
+  "sign-up": "انشاء حساب"
 }

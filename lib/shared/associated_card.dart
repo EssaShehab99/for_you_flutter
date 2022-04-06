@@ -52,8 +52,10 @@ class _AssociatedCardState extends State<AssociatedCard> {
             isCheckBox: true,
             onCheckBox: (List<bool> list){
               for(int i=0;i<list.length;i++){
-                if(list==true){
-                  Provider.of<HospitalManager>(context,listen: false).setCheck(i);
+                if(list[i]==true){
+                  Provider.of<HospitalManager>(context,listen: false).setCheck(i,true);
+                }else{
+                  Provider.of<HospitalManager>(context,listen: false).setCheck(i,false);
                 }
               }
                 setState(() {

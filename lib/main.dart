@@ -20,6 +20,7 @@ import 'data/providers/user_manager.dart';
 import 'modules/associated_hospitals.dart';
 import 'modules/checkups_screen.dart';
 import 'modules/description.dart';
+import 'modules/home.dart';
 import 'modules/questionnaires_screen.dart';
 
 void main() {
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
       builder: (context, value, child) {
         Config.getLocal(context);
         return MaterialApp(
-        home: SafeArea(child: AssociatedHospitals()),
+        home: SafeArea(child: Home()),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
