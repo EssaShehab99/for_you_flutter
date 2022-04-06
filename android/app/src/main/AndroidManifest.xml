@@ -1,10 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.for_you_flutter">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+    <application
         android:label="for_you_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
-        <activity
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyAigGvUhrIux8Snbg3KFdHHIg5IzvA7-WM"/>
+       <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"

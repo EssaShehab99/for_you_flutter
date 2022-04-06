@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:for_you_flutter/data/models/user.dart';
+import 'package:for_you_flutter/data/providers/user_manager.dart';
 import 'package:for_you_flutter/modules/questionnaires_screen.dart';
 import 'package:for_you_flutter/shared/dropdown_input.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constant_images.dart';
 import '../constants/constant_values.dart';
@@ -15,6 +18,12 @@ class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController heightController = TextEditingController();
+  final TextEditingController weightController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  late String blood;
+  late String socialStatus;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -65,6 +74,7 @@ class SignUp extends StatelessWidget {
                           }
                           return null;
                         },
+                        keyboardType: TextInputType.phone,
                         controller: phoneController,
                         hint: "phone-number".tr()),
                     TextInput(
@@ -74,9 +84,13 @@ class SignUp extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: phoneController,
+                        controller: ageController,
+                        keyboardType: TextInputType.number,
                         hint: "age".tr()),
-                    DropdownInput(items: ["man".tr(),"woman".tr()],hint: "gender".tr(),onChanged: (value){}),
+                    DropdownInput(
+                        items: ["man".tr(), "woman".tr()],
+                        hint: "gender".tr(),
+                        onChanged: (value) {}),
                     TextInput(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -84,7 +98,8 @@ class SignUp extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: phoneController,
+                        controller: heightController,
+                        keyboardType: TextInputType.number,
                         hint: "height".tr()),
                     TextInput(
                         validator: (value) {
@@ -93,10 +108,25 @@ class SignUp extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: phoneController,
+                        controller: weightController,
+                        keyboardType: TextInputType.number,
                         hint: "weight".tr()),
-                    DropdownInput(items: ["A+","A-","B+","A-","O+","O-","AB"],hint: "blood-type".tr(),onChanged: (value){}),
-                    DropdownInput(items: ["married".tr(),"celibate".tr(),"widower".tr()],hint: "social-status".tr(),onChanged: (value){}),
+                    DropdownInput(
+                        items: ["A+", "A-", "B+", "B-", "O+", "O-", "AB"],
+                        hint: "blood-type".tr(),
+                        onChanged: (value) {
+                          blood = value;
+                        }),
+                    DropdownInput(
+                        items: [
+                          "married".tr(),
+                          "celibate".tr(),
+                          "widower".tr()
+                        ],
+                        hint: "social-status".tr(),
+                        onChanged: (value) {
+                          socialStatus = value;
+                        }),
                     TextInput(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -104,18 +134,19 @@ class SignUp extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: phoneController,
+                        controller: passwordController,
                         hint: "password".tr(),
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true),
                     TextInput(
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
+                          if (value == null || value!=passwordController.text) {
+                            return 'not-match'.tr();
                           }
                           return null;
                         },
-                        controller: phoneController,
+                        textInputAction: TextInputAction.done,
+                        controller: TextEditingController(),
                         hint: "confirm".tr(),
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true),
@@ -131,6 +162,15 @@ class SignUp extends StatelessWidget {
                         ],
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
+                            Provider.of<UserManager>(context,listen: false).setUser(User(
+                              name: nameController.text,
+                                phone: phoneController.text,
+                                age: int.parse(ageController.text),
+                                height: double.parse(heightController.text),
+                                weight: double.parse(weightController.text),
+                                blood: blood,
+                                socialStatus: socialStatus,
+                                password: passwordController.text));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

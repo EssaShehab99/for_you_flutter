@@ -14,8 +14,8 @@ import 'dropdown_input.dart';
 
 enum SingingCharacter { yes, no }
 
-class CustomCard extends StatefulWidget {
-  const CustomCard(
+class QuestionnaireCard extends StatefulWidget {
+  const QuestionnaireCard(
       {Key? key, required this.onChangedRadio, required this.questionnaire})
       : super(key: key);
   final Questionnaire questionnaire;
@@ -23,10 +23,10 @@ class CustomCard extends StatefulWidget {
   final ValueChanged<SingingCharacter?> onChangedRadio;
 
   @override
-  State<CustomCard> createState() => _CustomCardState();
+  State<QuestionnaireCard> createState() => _QuestionnaireCardState();
 }
 
-class _CustomCardState extends State<CustomCard> {
+class _QuestionnaireCardState extends State<QuestionnaireCard> {
   SingingCharacter? _character = SingingCharacter.yes;
   late TextEditingController textEditingController;
   String? hint;
@@ -37,10 +37,10 @@ class _CustomCardState extends State<CustomCard> {
     hint = widget.questionnaire.hint;
     super.initState();
   }
-
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,7 +54,7 @@ class _CustomCardState extends State<CustomCard> {
         _character == SingingCharacter.yes ? true : false;
     questionnairesManager.updateItem(widget.questionnaire);
     return Container(
-      height: 170,
+      height: 175,
       width: double.infinity,
       padding: EdgeInsets.all(ConstantValues.padding),
       margin: EdgeInsets.only(top: ConstantValues.padding),
@@ -116,26 +116,36 @@ class _CustomCardState extends State<CustomCard> {
           if (widget.questionnaire.questionnaireType ==
               QuestionnaireType.button)
             Flexible(
-                flex: 3,
-                child: Components.MainButton(
-                    onTap: () {
-                      Components.selectFile().then((value) {
-                        setState(() {
-                          widget.questionnaire.answerAttach = value?.path;
-                          value == null
-                              ? hint = widget.questionnaire.hint
-                              : hint = File(value.path).uri.pathSegments.last;
-                        });
-                      });
-                    },
-                    children: [
-                      Flexible(
-                          child: Text(hint ?? "",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(color: ColorsApp.white)))
-                    ])),
+              flex: 3,
+              child: Row(
+                children: [
+                  Flexible(
+                      child: Components.MainButton(
+                          onTap: () {
+                            Components.selectFile().then((value) {
+                              setState(() {
+                                widget.questionnaire.answerAttach = value?.path;
+                              });
+                            });
+                          },
+                          children: [
+                             Flexible(
+                                child: Text(hint!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(color: ColorsApp.white)))
+                          ])),
+                  widget.questionnaire.answerAttach!=null?   Flexible(
+                      flex: 0,child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: ConstantValues.padding*0.5),
+                    child: InkWell(onTap: () {
+
+                    },child: Image.file(File(widget.questionnaire.answerAttach??""),width: 50,)),
+                  )):SizedBox.shrink(),
+                ],
+              ),
+            ),
           if (widget.questionnaire.questionnaireType ==
               QuestionnaireType.dropdown)
             Flexible(

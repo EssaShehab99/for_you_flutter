@@ -4,13 +4,14 @@ import 'package:for_you_flutter/constants/constant_values.dart';
 import '../styles/colors_app.dart';
 
 class TextInput extends StatelessWidget {
-   TextInput({Key? key,required this.controller,this.hint,this.icon,this.validator,this.keyboardType,this.obscureText}) : super(key: key);
+   TextInput({Key? key,required this.controller,this.hint,this.icon,this.validator,this.keyboardType,this.obscureText,this.textInputAction}) : super(key: key);
   final TextEditingController controller;
   final String? hint;
   final IconData? icon;
    final FormFieldValidator<String>? validator;
    final  TextInputType? keyboardType;
    final bool? obscureText;
+   final TextInputAction? textInputAction;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,6 +26,7 @@ class TextInput extends StatelessWidget {
           )]
       ),
       child: TextFormField(
+        textInputAction: textInputAction??TextInputAction.next,
         validator: validator,
         controller: controller,
         obscureText: obscureText??false,

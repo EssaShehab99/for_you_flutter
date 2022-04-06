@@ -1,11 +1,22 @@
 class User{
-  String id;
+  String? id;
+  String name;
   String phone;
-  String age;
-  bool height;
-  bool weight;
+  int age;
+  double height;
+  double weight;
   String blood;
   String socialStatus;
+  String? password;
 
-  User(this.id, this.phone, this.age, this.height, this.weight, this.blood, this.socialStatus);
+  User(
+      {this.id,
+      required this.name,
+      required this.phone,
+      required this.age,
+      required this.height,
+      required this.weight,
+      required this.blood,
+      required this.socialStatus,
+       this.password});
 }

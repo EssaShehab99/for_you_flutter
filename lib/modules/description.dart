@@ -5,10 +5,6 @@ import 'package:for_you_flutter/constants/constant_images.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
 import 'package:for_you_flutter/modules/sign_in.dart';
 import 'package:for_you_flutter/shared/locale_switch.dart';
-import 'package:for_you_flutter/styles/colors_app.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-
-import '../data/setting/config.dart';
 
 class Description extends StatelessWidget {
   const Description({Key? key}) : super(key: key);

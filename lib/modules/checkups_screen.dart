@@ -10,16 +10,17 @@ import 'package:provider/provider.dart';
 
 import '../constants/constant_images.dart';
 import '../constants/constant_values.dart';
+import '../data/models/checkup.dart';
 import '../data/models/questionnaire.dart';
+import '../shared/checkup_card.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
 
-class QuestionnairesScreen extends StatelessWidget {
-  QuestionnairesScreen({Key? key}) : super(key: key);
+class CheckupsScreen extends StatelessWidget {
+  CheckupsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String hint="attach-report".tr();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -48,37 +49,35 @@ class QuestionnairesScreen extends StatelessWidget {
                   child: SizedBox(
                 height: 50,
               )),
-
               Flexible(
                   child: Center(
-                    child: Text(
-               "welcome".tr()+" "+Provider.of<UserManager>(context,listen: false).getUser!.name,style: Theme.of(context).textTheme.headline1,
-              ),
-                  )),
-
+                child: Text(
+                  "welcome".tr() +
+                      " " +
+                      Provider.of<UserManager>(context, listen: false)
+                          .getUser!
+                          .name,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              )),
               Flexible(
                   child: SizedBox(
                 height: 50,
               )),
-              for(Questionnaire item in ConstantValues.questionnaireList)
-              Flexible(
-                  child:QuestionnaireCard(
-                    questionnaire: item,
-                    onChangedRadio: (SingingCharacter? value) {
-                      print(value);
-                    },
-                  )),
-              Components.MainButton(
-                  children: [
-                    Text(
-                      "next".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {}),
+              for (Checkup item in ConstantValues.checkupList)
+                Flexible(
+                    child: CheckupCard(
+                  checkup: item,
+                )),
+              Components.MainButton(children: [
+                Text(
+                  "next".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(color: ColorsApp.white),
+                )
+              ], onTap: () {}),
               Components.MainButton(
                   children: [
                     Text(

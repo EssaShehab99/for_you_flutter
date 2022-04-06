@@ -44,5 +44,22 @@
   "q-9": "Do you have thyroid problems ?",
   "q-10": "Do you have a specific tumor ?",
   "q-11": "chronic diseases",
-  "q-12": "Do you suffer from a genetic disease ?"
+  "q-12": "Do you suffer from a genetic disease ?",
+  "previous": "Previous",
+  "not-match": "Password does not match",
+  "welcome": "Welcome",
+  "select-validate-value": "Please Select Validate Value",
+  "medical-tests": "Medical tests",
+  "medical-reports": "Medical Reports",
+  "medicines-taken": "Medicines that are taken",
+  "hospital-1": "King Salman Hospital",
+  "hospital-2": "Al Yamama Hospital",
+  "hospital-3": "Prince Muhammad bin Abdulaziz Hospital",
+  "hospital-4": "King Abdulaziz Medical City National Guard",
+  "hospital-5": "(KFMC) King Fahd Medical City",
+  "hospital-6": "King Faisal Specialist Hospital",
+  "hospital-7": "King Abdulaziz University Hospital",
+  "hospital-8": "Security Forces",
+  "another": "Another",
+  "associated-hospitals": "Associated Hospitals"
 }
