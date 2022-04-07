@@ -67,21 +67,21 @@ class Home extends StatelessWidget {
               Flexible(
                   child: buildColumn(
                       textOne: "beneficiaries".tr(),
-                      imageOne: ConstantImage.iconOne,
+                      imageOne: ConstantImage.iconFive,
                       textTwo: "personal-information".tr(),
-                      imageTow: ConstantImage.iconTwo)),
+                      imageTow: ConstantImage.iconFour)),
               Flexible(
                   child: buildColumn(
                       textOne: "medical-examinations".tr(),
-                      imageOne: ConstantImage.iconThree,
+                      imageOne: ConstantImage.iconOne,
                       textTwo: "medical-history".tr(),
-                      imageTow: ConstantImage.iconFour)),
+                      imageTow: ConstantImage.iconSix)),
               Flexible(
                   child: buildColumn(
                       textOne: "hospital-network".tr(),
                       imageOne: ConstantImage.iconFive,
                       textTwo: "phone".tr(),
-                      imageTow: ConstantImage.iconSix)),
+                      imageTow: ConstantImage.iconThree)),
               Flexible(child: Components.MainButton(
                   children: [
                     Text(

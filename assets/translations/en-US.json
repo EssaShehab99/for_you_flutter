@@ -70,5 +70,10 @@
   "medical-history": "Medical History",
   "hospital-network": "Hospital Network",
   "phone": "920022776",
-  "log-out": "Log Out"
+  "log-out": "Log Out",
+  "code": "Confirmation Code",
+  "invalid-code": "Invalid confirmation code",
+  "active-account": "Active Account",
+  "code-was-send": "The activation code has been sent to the number",
+  "edit": "Edit"
 }

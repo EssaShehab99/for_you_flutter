@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/models/user.dart';
+import 'package:for_you_flutter/data/network/sign_up_dao.dart';
 import 'package:for_you_flutter/data/providers/user_manager.dart';
 import 'package:for_you_flutter/modules/questionnaires_screen.dart';
+import 'package:for_you_flutter/modules/verify_phone.dart';
 import 'package:for_you_flutter/shared/dropdown_input.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:provider/provider.dart';
@@ -161,22 +163,24 @@ class SignUp extends StatelessWidget {
                           )
                         ],
                         onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            Provider.of<UserManager>(context,listen: false).setUser(User(
-                              name: nameController.text,
-                                phone: phoneController.text,
-                                age: int.parse(ageController.text),
-                                height: double.parse(heightController.text),
-                                weight: double.parse(weightController.text),
-                                blood: blood,
-                                socialStatus: socialStatus,
-                                password: passwordController.text));
-                            Navigator.push(
+                          // if (_formKey.currentState!.validate()) {
+                          //   Provider.of<UserManager>(context,listen: false).setUser(User(
+                          //     name: nameController.text,
+                          //       phone: phoneController.text,
+                          //       age: int.parse(ageController.text),
+                          //       height: double.parse(heightController.text),
+                          //       weight: double.parse(weightController.text),
+                          //       blood: blood,
+                          //       socialStatus: socialStatus,
+                          //       password: passwordController.text));
+                          Provider.of<SignUpDAO>(context, listen: false).user=Provider.of<UserManager>(context, listen: false).getUser;;
+
+                          Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuestionnairesScreen(),
+                                  builder: (context) => VerifyPhone(),
                                 ));
-                          }
+                          // }
                         }),
                     SizedBox(
                       height: 10,
