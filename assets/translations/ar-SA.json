@@ -63,5 +63,12 @@
   "another": "غير ذالك",
   "associated-hospitals": "المستشفيات المرتبطة",
   "hospital-location": "موقع المستشفى",
-  "sign-up": "انشاء حساب"
+  "sign-up": "انشاء حساب",
+  "beneficiaries": "المستفيدون",
+  "personal-information": "المعلومات الشخصية",
+  "medical-examinations": "الفحوصات الطبية",
+  "medical-history": "التاريخ الطبي",
+  "hospital-network": "شبكة المستشفيات",
+  "phone": "920022776",
+  "log-out": "تسجيل خروح"
 }

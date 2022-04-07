@@ -64,11 +64,64 @@ class Home extends StatelessWidget {
                   child: SizedBox(
                 height: 50,
               )),
-
+              Flexible(
+                  child: buildColumn(
+                      textOne: "beneficiaries".tr(),
+                      imageOne: ConstantImage.iconOne,
+                      textTwo: "personal-information".tr(),
+                      imageTow: ConstantImage.iconTwo)),
+              Flexible(
+                  child: buildColumn(
+                      textOne: "medical-examinations".tr(),
+                      imageOne: ConstantImage.iconThree,
+                      textTwo: "medical-history".tr(),
+                      imageTow: ConstantImage.iconFour)),
+              Flexible(
+                  child: buildColumn(
+                      textOne: "hospital-network".tr(),
+                      imageOne: ConstantImage.iconFive,
+                      textTwo: "phone".tr(),
+                      imageTow: ConstantImage.iconSix)),
+              Flexible(child: Components.MainButton(
+                  children: [
+                    Text(
+                      "log-out".tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(color: ColorsApp.white),
+                    )
+                  ],
+                  onTap: () {
+                  }),)
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Column buildColumn(
+      {required String textOne,
+      required String imageOne,
+      required String textTwo,
+      required String imageTow}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: Row(
+            children: [
+              Expanded(
+                child: Components.homeCard(text: textOne, icon: imageOne),
+              ),
+              Expanded(
+                child: Components.homeCard(text: textTwo, icon: imageTow),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
