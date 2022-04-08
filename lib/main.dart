@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
@@ -16,6 +15,7 @@ import 'data/network/sign_up_dao.dart';
 import 'data/providers/app_state_manager.dart';
 import 'data/providers/hospitals_manager.dart';
 import 'data/providers/user_manager.dart';
+import 'modules/sign_in.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,13 +45,13 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => SignUpDAO()),
       ChangeNotifierProvider(create: (context) => HospitalManager()..initial(ConstantValues.hospitalsList)),
       ChangeNotifierProvider(create: (context) => CheckupManager()..setItems(ConstantValues.checkupList)),
-      ChangeNotifierProvider(create: (context) => UserManager()..setUser(User(name: "براء", phone: "+967777339975", age: 20, height: 1.8, weight: 56, blood: "O+", socialStatus: "married".tr()))),
+      ChangeNotifierProvider(create: (context) => UserManager()..setUser(User(name: "براء", phone: "+967777339975", age: 20, height: 1.8, weight: 56, blood: "O+", socialStatus: "married".tr(), password: 'essab74'))),
       ChangeNotifierProvider(create: (context) => QuestionnairesManager()..setItems(ConstantValues.questionnaireList)),
     ],child: Consumer<AppStateManager>(
       builder: (context, value, child) {
         Config.getLocal(context);
         return MaterialApp(
-        home: SafeArea(child: SignUp()),
+        home: SafeArea(child: SignIn()),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

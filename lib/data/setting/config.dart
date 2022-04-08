@@ -13,6 +13,6 @@ class Config {
   static Future<void> getLocal(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     EasyLocalization.of(context)?.setLocale(await prefs.getBool("isEnglish")??true?Locale('en','US'):Locale('ar','SA'));
-
   }
+  
 }

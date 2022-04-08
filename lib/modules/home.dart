@@ -12,6 +12,7 @@ import '../constants/constant_images.dart';
 import '../constants/constant_values.dart';
 import '../data/models/checkup.dart';
 import '../data/models/questionnaire.dart';
+import '../data/network/sign_up_dao.dart';
 import '../shared/checkup_card.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
@@ -93,6 +94,9 @@ class Home extends StatelessWidget {
                     )
                   ],
                   onTap: () {
+                    Provider.of<SignUpDAO>(context).auth.signOut();
+                    Provider.of<UserManager>(context).signOut();
+                    Navigator.pop(context);
                   }),)
             ],
           ),

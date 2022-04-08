@@ -30,59 +30,31 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
   final _formKey = GlobalKey<FormState>();
   late SignUpDAO signUpDAO;
-  bool verificationCheck = false;
+  bool invalidVerification = false;
 
   @override
   void initState() {
     signUpDAO = Provider.of<SignUpDAO>(context, listen: false);
     // signUpDAO.verifyPhone(
     //     verificationCompleted: (phoneAuthCredential) {
-    //       print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ${phoneAuthCredential.smsCode} AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     //       setState(() {
-    //         verifyCodeController.text=phoneAuthCredential.smsCode!;
+    //         verifyCodeController.text = phoneAuthCredential.smsCode!;
     //       });
     //     },
     //     verificationFailed: (FirebaseAuthException error) {
-    //       print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB ${error} BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-    //
+    //       setState(() {
+    //         invalidVerification = true;
+    //       });
     //     },
     //     codeSent: (
     //       String verificationId,
     //       int? forceResendingToken,
     //     ) async {
-    //
-    //       print("CCCCCCCCCCCCCCCCCCCCCCCCCCCC ${verificationId} CCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-    //       try {
-    //         signUpDAO.verificationId=verificationId;
-    //       } catch (e) {
-    //
-    //       }
+    //       signUpDAO.verificationId = verificationId;
     //     },
     //     codeAutoRetrievalTimeout: (String verificationId) {});
 
     super.initState();
-  }
-
-  Future<void> verificationCode() async {
-    try {
-      setState(() {
-        verificationCheck = false;
-      });
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: signUpDAO.verificationId!,
-          smsCode: verifyCodeController.text);
-      await signUpDAO.auth.signInWithCredential(credential).then((value) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuestionnairesScreen(),
-            ));
-      });
-    } catch (_) {
-      setState(() {
-        verificationCheck = true;
-      });
-    }
   }
 
   @override
@@ -151,7 +123,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                             end: Duration.zero),
                         onEnd: () {
                           setState(() {
-                            verificationCheck = false;
+                            invalidVerification = false;
                           });
                         },
                         builder: (BuildContext context, Duration value, _) {
@@ -201,9 +173,30 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                     )
                   ],
                       onTap: () {
-                        verificationCode();
+                        signUpDAO.signUp();
+
+                        // signUpDAO.verificationCode(
+                        //     smsCode: verifyCodeController.text,
+                        //     onSuccess: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) =>
+                        //                 QuestionnairesScreen(),
+                        //           ));
+                        //     },
+                        //     onClick: () {
+                        //       setState(() {
+                        //         invalidVerification = false;
+                        //       });
+                        //     },
+                        //     onFailed: () {
+                        //       setState(() {
+                        //         invalidVerification = true;
+                        //       });
+                        //     });
                       })),
-              if (verificationCheck)
+              if (invalidVerification)
                 Flexible(
                   child: Text(
                     "invalid-code".tr(),

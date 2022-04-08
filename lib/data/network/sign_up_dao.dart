@@ -7,7 +7,7 @@ import 'package:for_you_flutter/data/providers/user_manager.dart';
 class SignUpDAO extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   final CollectionReference collection =
-  FirebaseFirestore.instance.collection('user');
+      FirebaseFirestore.instance.collection('user');
 
   UserModel.User? user;
   String? phoneNo;
@@ -16,8 +16,20 @@ class SignUpDAO extends ChangeNotifier {
   String? uid;
 
   Future<void> signUp() async {
-    if(user!=null)
-      return collection.doc(user!.phone).set(user!.toJson());
+    if (user != null) return collection.doc(user!.phone).set(user!.toJson());
+  }
+
+  Future<UserModel.User?> signIn(String phone, String password) async {
+    UserModel.User? user;
+    try {
+      await collection.doc(phone).get().then((value) {
+        if ((value.data() as Map<String, dynamic>)["password"] == password) {
+          user = UserModel.User.fromJson(
+              value.data() as Map<String, dynamic>, value.id);
+        }
+      });
+    } catch (e) {}
+    return user;
   }
 
   Future<void> verifyPhone({
@@ -26,15 +38,33 @@ class SignUpDAO extends ChangeNotifier {
     required PhoneCodeSent codeSent,
     required PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout,
   }) async {
-    if(user!=null)
+    if (user != null)
       await auth.verifyPhoneNumber(
         phoneNumber: user!.phone,
         timeout: Duration(seconds: UserManager.DURATION_TIME_OUT),
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
-        codeSent:codeSent,
+        codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
     return Future.value();
+  }
+
+  Future<void> verificationCode(
+      {required String smsCode,
+      required Function onClick,
+      required Function onFailed,
+      required Function onSuccess}) async {
+    try {
+      onClick();
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId!, smsCode: smsCode);
+      await auth.signInWithCredential(credential).then((value) {
+        onSuccess();
+        signUp();
+      });
+    } catch (_) {
+      onFailed();
+    }
   }
 }

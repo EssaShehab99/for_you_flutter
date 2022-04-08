@@ -17,4 +17,7 @@ class UserManager extends ChangeNotifier {
   setActiveCode(String activeCode) {
     this.activeCode=activeCode;
   }
+  void signOut(){
+    this._user=null;
+  }
 }
