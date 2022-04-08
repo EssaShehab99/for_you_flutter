@@ -74,7 +74,7 @@ class Home extends StatelessWidget {
               onTap: () {
                 Provider.of<SignUpDAO>(context,listen: false).auth.signOut();
                 Provider.of<UserManager>(context,listen: false).signOut();
-                Config.signOutUser();
+
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

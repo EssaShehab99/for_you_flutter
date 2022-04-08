@@ -8,7 +8,7 @@
   "sign-in-by-finger": "الدخول عبر البصمة",
   "has-not-account": "ليس لديك حساب؟ إنشاء حساب",
   "validate-value": "الرجاء ادخال قيمة صحيحة",
-  "slide-fingerprint": "قم بتمرير بصمة اصبعك للدخول",
+  "error-authentication": "حدث خطأ اثناء عملية المصادقة",
   "has-account": "لديك حساب؟ تسجيل الدخول",
   "name": "الاسم",
   "age": "العمر",
@@ -76,5 +76,7 @@
   "active-account": "تفعيل الحساب",
   "code-was-send": "ارسال كود التفعيل على الرقم",
   "edit": "تعديل",
-  "incorrect-data": "كلمة المرور او رقم الهاتف غير صحيح"
+  "incorrect-data": "كلمة المرور او رقم الهاتف غير صحيح",
+  "scan-fingerprint": "امسح بصمة إصبعك للمصادقة",
+  "auth-confirm": "تأكيد المصادقة"
 }

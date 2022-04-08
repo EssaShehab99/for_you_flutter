@@ -18,6 +18,7 @@ import 'data/providers/hospitals_manager.dart';
 import 'data/providers/user_manager.dart';
 import 'modules/associated_hospitals.dart';
 import 'modules/sign_in.dart';
+import 'modules/test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
       builder: (context, value, child) {
         Config.getLocal(context);
         return MaterialApp(
-        home: SafeArea(child: Description()),
+        home: SafeArea(child: SignIn()),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

@@ -8,7 +8,7 @@
   "sign-in-by-finger": "Sign In By Fingerprint",
   "has-not-account": "Don't have an account? Create an account",
   "validate-value": "Please enter a valid value",
-  "slide-fingerprint": "Slide your fingerprint to enter",
+  "error-authentication": "An error occurred during the authentication process",
   "has-account": "you have an account? sign in",
   "name": "Name",
   "age": "Age",
@@ -76,5 +76,7 @@
   "active-account": "Active Account",
   "code-was-send": "The activation code has been sent to the number",
   "edit": "Edit",
-  "incorrect-data": "The password or phone number is incorrect"
+  "incorrect-data": "The password or phone number is incorrect",
+  "scan-fingerprint": "Scan your fingerprint to authenticate",
+  "auth-confirm": "Authentication confirmation"
 }
