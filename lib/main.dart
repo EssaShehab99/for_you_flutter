@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: SignIn()),
+            home: SafeArea(child: QuestionnairesScreen()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

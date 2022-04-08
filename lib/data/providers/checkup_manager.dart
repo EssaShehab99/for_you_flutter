@@ -6,6 +6,8 @@ import '../models/checkup.dart';
 class CheckupManager extends ChangeNotifier{
   List<Checkup>  _checkupList=[];
 
+  List<Checkup> get checkupList => _checkupList;
+
   void updateItem(Checkup checkup){
     _checkupList[this._checkupList.indexWhere((element) => checkup.id==element.id)]=checkup;
   }

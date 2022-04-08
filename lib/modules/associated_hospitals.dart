@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/network/account_dao.dart';
+import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
 import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/shared/associated_card.dart';
@@ -81,7 +82,11 @@ class AssociatedHospitals extends StatelessWidget {
                   ],
                   onTap: () {
                     Provider.of<AccountDAO>(context, listen: false)
-                        .setQuestionnaire(Provider.of<QuestionnairesManager>(
+                    ..setCheckup(Provider.of<CheckupManager>(
+                        context,
+                        listen: false)
+                        .checkupList)
+                        ..setQuestionnaire(Provider.of<QuestionnairesManager>(
                                 context,
                                 listen: false)
                             .questionnaireList);

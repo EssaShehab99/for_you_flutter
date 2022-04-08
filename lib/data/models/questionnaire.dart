@@ -22,7 +22,7 @@ class Questionnaire {
 
   factory Questionnaire.fromJson(Map<String, dynamic> json, String id) =>
       Questionnaire(
-        id: json["id"],
+        id: int.parse(id),
         question: json["question"],
         docID: json["docID"],
         questionnaireType: json["questionnaireType"],
