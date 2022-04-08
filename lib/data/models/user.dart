@@ -4,7 +4,6 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String? id;
   String name;
   String phone;
   int age;
@@ -21,7 +20,7 @@ class User {
   // var decrypted = encrypter.decrypt(encrypted, iv: iv);
 
   User(
-      {this.id,
+      {
       required this.name,
       required this.phone,
       required this.age,
@@ -31,7 +30,7 @@ class User {
       required this.socialStatus,
       required this.password});
 
-  factory User.fromJson(Map<String, dynamic> json, String id) => User(
+  factory User.fromJson(Map<String, dynamic> json) => User(
       name: json["name"],
       phone: json["phone"],
       age: json["age"],
@@ -45,7 +44,6 @@ class User {
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     var encrypted = encrypter.encrypt(password, iv: iv);
     return <String, dynamic>{
-      "id": id,
       "name": name,
       "phone": phone,
       "age": age,
@@ -59,7 +57,7 @@ class User {
 
   factory User.fromSnapshot(DocumentSnapshot snapshot) {
     final user =
-        User.fromJson(snapshot.data() as Map<String, dynamic>, snapshot.id);
+        User.fromJson(snapshot.data() as Map<String, dynamic>);
     user.reference = snapshot.reference;
     return user;
   }

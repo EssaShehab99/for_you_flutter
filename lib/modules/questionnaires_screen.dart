@@ -13,6 +13,7 @@ import '../constants/constant_values.dart';
 import '../data/models/questionnaire.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
+import 'checkups_screen.dart';
 
 class QuestionnairesScreen extends StatelessWidget {
   QuestionnairesScreen({Key? key}) : super(key: key);
@@ -51,7 +52,15 @@ class QuestionnairesScreen extends StatelessWidget {
                       ?.copyWith(color: ColorsApp.white),
                 )
               ],
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CheckupsScreen(),
+                    ));
+
+              }),
           Components.MainButton(
               children: [
                 Text(

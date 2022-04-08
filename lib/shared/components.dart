@@ -70,9 +70,9 @@ class Components {
         ),
       );
 
-  static Future<File?> selectFile() async {
+  static Future<File?> selectFile({List<String>? allowedExtensions}) async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'png']);
+        .pickFiles(type: FileType.custom, allowedExtensions: allowedExtensions??['jpg', 'png']);
 
     if (result != null) {
       return File(result.files.single.path!);

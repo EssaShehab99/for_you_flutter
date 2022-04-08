@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
-import 'package:for_you_flutter/shared/components.dart';
-import 'package:for_you_flutter/shared/text_input.dart';
+import '/data/providers/questionnaires_manager.dart';
+import '/shared/components.dart';
+import '/shared/text_input.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constant_values.dart';
@@ -139,7 +140,8 @@ class _QuestionnaireCardState extends State<QuestionnaireCard> {
                   widget.questionnaire.answerAttach!=null?   Flexible(
                       flex: 0,child: Padding(
                     padding:  EdgeInsets.symmetric(horizontal: ConstantValues.padding*0.5),
-                    child: InkWell(onTap: () {
+                    child: InkWell(onTap: () async {
+                      await OpenFile.open(widget.questionnaire.answerAttach);
 
                     },child: Image.file(File(widget.questionnaire.answerAttach??""),width: 50,)),
                   )):SizedBox.shrink(),

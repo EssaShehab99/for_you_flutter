@@ -148,8 +148,12 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                     )
                   ],
                   onTap: () {
-                    signUpDAO.signUp();
-
+                    Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        QuestionnairesScreen(),
+                                  ));
                     // signUpDAO.verificationCode(
                     //     smsCode: verifyCodeController.text,
                     //     onSuccess: () {

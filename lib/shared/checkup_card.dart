@@ -1,16 +1,17 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/shared/components.dart';
 import 'package:for_you_flutter/shared/text_input.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constant_values.dart';
 import '../data/models/checkup.dart';
-import '../data/models/questionnaire.dart';
 import '../styles/colors_app.dart';
 import 'dropdown_input.dart';
 
@@ -55,7 +56,7 @@ class _CheckupCardState extends State<CheckupCard> {
                 Flexible(flex: 2,child: Padding(
                   padding:  EdgeInsetsDirectional.only(end: ConstantValues.padding),
                   child: InkWell(onTap: () {
-                    Components.selectFile().then((value) {
+                    Components.selectFile(allowedExtensions: ["pdf"]).then((value) {
                      setState(() {
                        if(value!=null){
                          if(widget.checkup.checkupAttach.length==widget.checkup.numberAttach)
@@ -72,7 +73,18 @@ class _CheckupCardState extends State<CheckupCard> {
                 )),
 
               for(var item in widget.checkup.checkupAttach)
-                Flexible(child: TextButton(onPressed: (){}, child: Text("${widget.checkup.checkupAttach.indexOf(item)+1}",style: Theme.of(context).textTheme.bodyText1?.copyWith(decoration: TextDecoration.underline),)))
+                Flexible(child: TextButton(onPressed: ()async{
+                  await OpenFile.open(item);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           Scaffold(
+                  //               body: Container(
+                  //                   child: SfPdfViewer.file(
+                  //                       File(item),controller: PdfViewerController(),)))
+                  //     ));
+                }, child: Text("${widget.checkup.checkupAttach.indexOf(item)+1}",style: Theme.of(context).textTheme.bodyText1?.copyWith(decoration: TextDecoration.underline),)))
             ],
           ))
         ],

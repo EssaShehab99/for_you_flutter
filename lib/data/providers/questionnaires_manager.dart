@@ -5,6 +5,8 @@ import '../models/questionnaire.dart';
 class QuestionnairesManager extends ChangeNotifier{
   List<Questionnaire>  _questionnaireList=[];
 
+  List<Questionnaire> get questionnaireList => _questionnaireList;
+
   void updateItem(Questionnaire questionnaire){
     _questionnaireList[this._questionnaireList.indexWhere((element) => questionnaire.id==element.id)]=questionnaire;
   }

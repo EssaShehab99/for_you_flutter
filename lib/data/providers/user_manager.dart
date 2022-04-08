@@ -12,6 +12,7 @@ class UserManager extends ChangeNotifier {
 
   void setUser(User user) {
     this._user = user;
+    notifyListeners();
   }
 
   setActiveCode(String activeCode) {

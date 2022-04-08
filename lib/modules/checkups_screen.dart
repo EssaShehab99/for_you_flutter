@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/data/providers/user_manager.dart';
 import 'package:for_you_flutter/shared/questionnaire_card.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
@@ -15,6 +16,7 @@ import '../data/models/questionnaire.dart';
 import '../shared/checkup_card.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
+import 'associated_hospitals.dart';
 
 class CheckupsScreen extends StatelessWidget {
   CheckupsScreen({Key? key}) : super(key: key);
@@ -24,7 +26,6 @@ class CheckupsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Components.bodyScreens([
-
           Flexible(
               child: Center(
                 child: Text(
@@ -53,7 +54,16 @@ class CheckupsScreen extends StatelessWidget {
                   .bodyText1
                   ?.copyWith(color: ColorsApp.white),
             )
-          ], onTap: () {}),
+          ], onTap: () {
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AssociatedHospitals(),
+                ));
+
+          }),
           Components.MainButton(
               children: [
                 Text(

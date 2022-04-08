@@ -25,7 +25,7 @@ class SignUpDAO extends ChangeNotifier {
       await collection.doc(phone).get().then((value) {
         if ((value.data() as Map<String, dynamic>)["password"] == password) {
           user = UserModel.User.fromJson(
-              value.data() as Map<String, dynamic>, value.id);
+              value.data() as Map<String, dynamic>);
         }
       });
     } catch (e) {}

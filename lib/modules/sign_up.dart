@@ -144,26 +144,23 @@ class SignUp extends StatelessWidget {
                           )
                         ],
                         onTap: () {
-                          // if (_formKey.currentState!.validate()) {
-                          //   Provider.of<UserManager>(context,listen: false).setUser(User(
-                          //     name: nameController.text,
-                          //       phone: phoneController.text,
-                          //       age: int.parse(ageController.text),
-                          //       height: double.parse(heightController.text),
-                          //       weight: double.parse(weightController.text),
-                          //       blood: blood,
-                          //       socialStatus: socialStatus,
-                          //       password: passwordController.text));
-                          Provider.of<SignUpDAO>(context, listen: false).user=Provider.of<UserManager>(context, listen: false).getUser;;
-
-
-
+                          if (_formKey.currentState!.validate()) {
+                            Provider.of<UserManager>(context,listen: false).setUser(User(
+                              name: nameController.text,
+                                phone: phoneController.text,
+                                age: int.parse(ageController.text),
+                                height: double.parse(heightController.text),
+                                weight: double.parse(weightController.text),
+                                blood: blood,
+                                socialStatus: socialStatus,
+                                password: passwordController.text));
+                          Provider.of<SignUpDAO>(context, listen: false).user=Provider.of<UserManager>(context, listen: false).getUser;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => VerifyPhone(),
                               ));
-                          // }
+                          }
                         }),
                     SizedBox(
                       height: 10,

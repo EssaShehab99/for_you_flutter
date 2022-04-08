@@ -12,7 +12,17 @@
         android:label="for_you_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
-       <meta-data android:name="com.google.android.geo.API_KEY"
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyAigGvUhrIux8Snbg3KFdHHIg5IzvA7-WM"/>
        <activity
             android:name=".MainActivity"

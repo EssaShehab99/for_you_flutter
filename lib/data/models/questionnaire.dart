@@ -1,7 +1,7 @@
-enum QuestionnaireType { none, field, button , dropdown }
+enum QuestionnaireType { none, field, button, dropdown }
 
-class Questionnaire{
-  int? id;
+class Questionnaire {
+  int id;
   String? docID;
   String question;
   String? hint;
@@ -12,11 +12,30 @@ class Questionnaire{
 
   Questionnaire(
       {required this.id,
-        required this.question,
-         this.docID,
-          this.answer,
-        required  this.questionnaireType,
-          this.hint,
-          this.items,
-         this.answerAttach});
+      required this.question,
+      this.docID,
+      this.answer,
+      required this.questionnaireType,
+      this.hint,
+      this.items,
+      this.answerAttach});
+
+  factory Questionnaire.fromJson(Map<String, dynamic> json, String id) =>
+      Questionnaire(
+        id: json["id"],
+        question: json["question"],
+        docID: json["docID"],
+        questionnaireType: json["questionnaireType"],
+        hint: json["hint"],
+        items: json["items"],
+        answerAttach: json["answerAttach"],
+      );
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      "answer": answer,
+      "questionnaireType": questionnaireType.index,
+      "answerAttach": answerAttach
+    };
+  }
 }

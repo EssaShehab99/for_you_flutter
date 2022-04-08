@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
 import 'package:provider/provider.dart';
-import 'package:multiselect/multiselect.dart';
 
 import '../data/providers/hospitals_manager.dart';
 import '../styles/colors_app.dart';
