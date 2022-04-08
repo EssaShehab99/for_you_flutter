@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/providers/user_manager.dart';
+import 'package:for_you_flutter/modules/sign_in.dart';
 import 'package:for_you_flutter/shared/questionnaire_card.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ import '../constants/constant_values.dart';
 import '../data/models/checkup.dart';
 import '../data/models/questionnaire.dart';
 import '../data/network/sign_up_dao.dart';
+import '../data/setting/config.dart';
 import '../shared/checkup_card.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
@@ -24,34 +26,10 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(ConstantValues.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: LocaleSwitch(),
-              ),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: SvgPicture.asset(
-                      ConstantImage.logo,
-                      width: double.infinity,
-                      height: 200,
-                    ),
-                  )),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  child: Center(
+        body: Components.bodyScreens([
+
+          Flexible(
+              child: Center(
                 child: Text(
                   "welcome".tr() +
                       " " +
@@ -61,46 +39,49 @@ class Home extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline1,
                 ),
               )),
-              Flexible(
-                  child: SizedBox(
+          Flexible(
+              child: SizedBox(
                 height: 50,
               )),
-              Flexible(
-                  child: buildColumn(
-                      textOne: "beneficiaries".tr(),
-                      imageOne: ConstantImage.iconFive,
-                      textTwo: "personal-information".tr(),
-                      imageTow: ConstantImage.iconFour)),
-              Flexible(
-                  child: buildColumn(
-                      textOne: "medical-examinations".tr(),
-                      imageOne: ConstantImage.iconOne,
-                      textTwo: "medical-history".tr(),
-                      imageTow: ConstantImage.iconSix)),
-              Flexible(
-                  child: buildColumn(
-                      textOne: "hospital-network".tr(),
-                      imageOne: ConstantImage.iconFive,
-                      textTwo: "phone".tr(),
-                      imageTow: ConstantImage.iconThree)),
-              Flexible(child: Components.MainButton(
-                  children: [
-                    Text(
-                      "log-out".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {
-                    Provider.of<SignUpDAO>(context).auth.signOut();
-                    Provider.of<UserManager>(context).signOut();
-                    Navigator.pop(context);
-                  }),)
-            ],
-          ),
-        ),
+          Flexible(
+              child: buildColumn(
+                  textOne: "beneficiaries".tr(),
+                  imageOne: ConstantImage.iconFive,
+                  textTwo: "personal-information".tr(),
+                  imageTow: ConstantImage.iconFour)),
+          Flexible(
+              child: buildColumn(
+                  textOne: "medical-examinations".tr(),
+                  imageOne: ConstantImage.iconOne,
+                  textTwo: "medical-history".tr(),
+                  imageTow: ConstantImage.iconSix)),
+          Flexible(
+              child: buildColumn(
+                  textOne: "hospital-network".tr(),
+                  imageOne: ConstantImage.iconFive,
+                  textTwo: "phone".tr(),
+                  imageTow: ConstantImage.iconThree)),
+          Flexible(child: Components.MainButton(
+              children: [
+                Text(
+                  "log-out".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(color: ColorsApp.white),
+                )
+              ],
+              onTap: () {
+                Provider.of<SignUpDAO>(context,listen: false).auth.signOut();
+                Provider.of<UserManager>(context,listen: false).signOut();
+                Config.signOutUser();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignIn(),
+                    ));
+              }),)
+        ]),
       ),
     );
   }

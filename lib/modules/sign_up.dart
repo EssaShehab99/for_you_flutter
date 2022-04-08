@@ -34,30 +34,9 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(ConstantValues.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: LocaleSwitch(),
-              ),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: SvgPicture.asset(
-                      ConstantImage.logo,
-                      width: double.infinity,
-                      height: 200,
-                    ),
-                  )),
-              Flexible(
-                  child: Form(
+        body: Components.bodyScreens([
+          Flexible(
+              child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,10 +159,10 @@ class SignUp extends StatelessWidget {
 
 
                           Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VerifyPhone(),
-                                ));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerifyPhone(),
+                              ));
                           // }
                         }),
                     SizedBox(
@@ -204,9 +183,7 @@ class SignUp extends StatelessWidget {
                   ],
                 ),
               ))
-            ],
-          ),
-        ),
+        ]),
       ),
     );
   }

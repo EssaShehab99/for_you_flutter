@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:for_you_flutter/constants/constant_images.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
 import 'package:for_you_flutter/modules/sign_in.dart';
+import 'package:for_you_flutter/shared/components.dart';
 import 'package:for_you_flutter/shared/locale_switch.dart';
 
 class Description extends StatelessWidget {
@@ -12,40 +13,20 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(ConstantValues.padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: LocaleSwitch(),
-            ),
-            Flexible(
-                child: SizedBox(
-              height: 50,
+      body: Components.bodyScreens([    Flexible(
+          child: Text(
+            "title-desc".tr(),
+            style: Theme.of(context).textTheme.headline1,
+          )),
+        Flexible(
+            flex: 4,
+            child: Text(
+              "details-desc".tr(),
+              style: Theme.of(context).textTheme.bodyText1,
+              textAlign: TextAlign.justify,
             )),
-            Flexible(
-                flex: 3,
-                child: SvgPicture.asset(ConstantImage.logo,
-                    width: double.infinity)),
-            Flexible(
-                child: SizedBox(
-              height: 50,
-            )),
-            Flexible(
-                child: Text(
-              "title-desc".tr(),
-              style: Theme.of(context).textTheme.headline1,
-            )),
-            Flexible(
-                flex: 4,
-                child: Text(
-                  "details-desc".tr(),
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.justify,
-                )),
-            Flexible(
-                child: Center(
+        Flexible(
+            child: Center(
               child: TextButton(
                 onPressed: () {
                   Navigator.push(context,MaterialPageRoute(builder: (context) => SignIn(),));
@@ -53,10 +34,7 @@ class Description extends StatelessWidget {
                 child: Text("skip".tr(),
                   style: Theme.of(context).textTheme.headline1,),
               ),
-            ))
-          ],
-        ),
-      ),
+            ))]),
     );
   }
 }

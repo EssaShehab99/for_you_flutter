@@ -23,34 +23,10 @@ class CheckupsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(ConstantValues.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: LocaleSwitch(),
-              ),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: SvgPicture.asset(
-                      ConstantImage.logo,
-                      width: double.infinity,
-                      height: 200,
-                    ),
-                  )),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  child: Center(
+        body: Components.bodyScreens([
+
+          Flexible(
+              child: Center(
                 child: Text(
                   "welcome".tr() +
                       " " +
@@ -60,40 +36,38 @@ class CheckupsScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline1,
                 ),
               )),
-              Flexible(
-                  child: SizedBox(
+          Flexible(
+              child: SizedBox(
                 height: 50,
               )),
-              for (Checkup item in ConstantValues.checkupList)
-                Flexible(
-                    child: CheckupCard(
+          for (Checkup item in ConstantValues.checkupList)
+            Flexible(
+                child: CheckupCard(
                   checkup: item,
                 )),
-              Components.MainButton(children: [
+          Components.MainButton(children: [
+            Text(
+              "next".tr(),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(color: ColorsApp.white),
+            )
+          ], onTap: () {}),
+          Components.MainButton(
+              children: [
                 Text(
-                  "next".tr(),
+                  "previous".tr(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
                       ?.copyWith(color: ColorsApp.white),
                 )
-              ], onTap: () {}),
-              Components.MainButton(
-                  children: [
-                    Text(
-                      "previous".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {
-                    Navigator.pop(context);
-                  }),
-            ],
-          ),
-        ),
+              ],
+              onTap: () {
+                Navigator.pop(context);
+              }),
+        ]),
       ),
     );
   }

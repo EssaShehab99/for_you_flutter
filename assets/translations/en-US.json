@@ -75,5 +75,6 @@
   "invalid-code": "Invalid confirmation code",
   "active-account": "Active Account",
   "code-was-send": "The activation code has been sent to the number",
-  "edit": "Edit"
+  "edit": "Edit",
+  "incorrect-data": "The password or phone number is incorrect"
 }

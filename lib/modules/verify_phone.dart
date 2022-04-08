@@ -61,34 +61,9 @@ class _VerifyPhoneState extends State<VerifyPhone> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(ConstantValues.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: LocaleSwitch(),
-              ),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: SvgPicture.asset(
-                      ConstantImage.logo,
-                      width: double.infinity,
-                      height: 200,
-                    ),
-                  )),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              Flexible(
-                  child: Center(
+        body: Components.bodyScreens([
+          Flexible(
+              child: Center(
                 child: Wrap(
                   children: [
                     Text(
@@ -116,7 +91,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                     ),
                     TweenAnimationBuilder(
                         duration:
-                            Duration(seconds: UserManager.DURATION_TIME_OUT),
+                        Duration(seconds: UserManager.DURATION_TIME_OUT),
                         tween: Tween(
                             begin: Duration(
                                 minutes: UserManager.DURATION_TIME_OUT),
@@ -138,12 +113,12 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                   ],
                 ),
               )),
-              Flexible(
-                  child: SizedBox(
+          Flexible(
+              child: SizedBox(
                 height: 50,
               )),
-              Flexible(
-                  child: Form(
+          Flexible(
+              child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,9 +136,9 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                   ],
                 ),
               )),
-              Flexible(
-                  child: Components.MainButton(
-                      children: [
+          Flexible(
+              child: Components.MainButton(
+                  children: [
                     Text(
                       "active-account".tr(),
                       style: Theme.of(context)
@@ -172,43 +147,41 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                           ?.copyWith(color: ColorsApp.white),
                     )
                   ],
-                      onTap: () {
-                        signUpDAO.signUp();
+                  onTap: () {
+                    signUpDAO.signUp();
 
-                        // signUpDAO.verificationCode(
-                        //     smsCode: verifyCodeController.text,
-                        //     onSuccess: () {
-                        //       Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 QuestionnairesScreen(),
-                        //           ));
-                        //     },
-                        //     onClick: () {
-                        //       setState(() {
-                        //         invalidVerification = false;
-                        //       });
-                        //     },
-                        //     onFailed: () {
-                        //       setState(() {
-                        //         invalidVerification = true;
-                        //       });
-                        //     });
-                      })),
-              if (invalidVerification)
-                Flexible(
-                  child: Text(
-                    "invalid-code".tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline1
-                        ?.copyWith(color: Colors.red, fontSize: 15),
-                  ),
-                )
-            ],
-          ),
-        ),
+                    // signUpDAO.verificationCode(
+                    //     smsCode: verifyCodeController.text,
+                    //     onSuccess: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) =>
+                    //                 QuestionnairesScreen(),
+                    //           ));
+                    //     },
+                    //     onClick: () {
+                    //       setState(() {
+                    //         invalidVerification = false;
+                    //       });
+                    //     },
+                    //     onFailed: () {
+                    //       setState(() {
+                    //         invalidVerification = true;
+                    //       });
+                    //     });
+                  })),
+          if (invalidVerification)
+            Flexible(
+              child: Text(
+                "invalid-code".tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    ?.copyWith(color: Colors.red, fontSize: 15),
+              ),
+            )
+        ]),
       ),
     );
   }

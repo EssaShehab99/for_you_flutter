@@ -14,5 +14,17 @@ class Config {
     final prefs = await SharedPreferences.getInstance();
     EasyLocalization.of(context)?.setLocale(await prefs.getBool("isEnglish")??true?Locale('en','US'):Locale('ar','SA'));
   }
-  
+  static  Future<void> setUser(String phone,String password)async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList("phone-password", [phone,password]);
+  }
+  static Future<List<String>?> getUser()async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList("phone-password");
+  }
+  static Future<void> signOutUser()async {
+    final prefs = await SharedPreferences.getInstance();
+     prefs.remove("phone-password");
+  }
+
 }

@@ -7,6 +7,7 @@ import 'package:for_you_flutter/data/models/user.dart';
 import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/data/setting/config.dart';
+import 'package:for_you_flutter/modules/description.dart';
 import 'package:for_you_flutter/modules/sign_up.dart';
 import 'package:for_you_flutter/styles/theme_app.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,6 +16,7 @@ import 'data/network/sign_up_dao.dart';
 import 'data/providers/app_state_manager.dart';
 import 'data/providers/hospitals_manager.dart';
 import 'data/providers/user_manager.dart';
+import 'modules/associated_hospitals.dart';
 import 'modules/sign_in.dart';
 
 Future<void> main() async {
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
       builder: (context, value, child) {
         Config.getLocal(context);
         return MaterialApp(
-        home: SafeArea(child: SignIn()),
+        home: SafeArea(child: Description()),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

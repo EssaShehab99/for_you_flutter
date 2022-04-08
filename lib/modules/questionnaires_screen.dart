@@ -22,79 +22,50 @@ class QuestionnairesScreen extends StatelessWidget {
     String hint="attach-report".tr();
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(ConstantValues.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: LocaleSwitch(),
-              ),
-              Flexible(
-                  child: SizedBox(
+        body: Components.bodyScreens([
+          Flexible(
+              child: Center(
+                child: Text(
+                  "welcome".tr()+" "+Provider.of<UserManager>(context,listen: false).getUser!.name,style: Theme.of(context).textTheme.headline1,
+                ),
+              )),
+          Flexible(
+              child: SizedBox(
                 height: 50,
               )),
-              Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: SvgPicture.asset(
-                      ConstantImage.logo,
-                      width: double.infinity,
-                      height: 200,
-                    ),
-                  )),
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-
-              Flexible(
-                  child: Center(
-                    child: Text(
-               "welcome".tr()+" "+Provider.of<UserManager>(context,listen: false).getUser!.name,style: Theme.of(context).textTheme.headline1,
-              ),
-                  )),
-
-              Flexible(
-                  child: SizedBox(
-                height: 50,
-              )),
-              for(Questionnaire item in ConstantValues.questionnaireList)
-              Flexible(
-                  child:QuestionnaireCard(
-                    questionnaire: item,
-                    onChangedRadio: (SingingCharacter? value) {
-                      print(value);
-                    },
-                  )),
-              Components.MainButton(
-                  children: [
-                    Text(
-                      "next".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {}),
-              Components.MainButton(
-                  children: [
-                    Text(
-                      "previous".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {
-                    Navigator.pop(context);
-                  }),
-            ],
-          ),
-        ),
+          for(Questionnaire item in ConstantValues.questionnaireList)
+            Flexible(
+                child:QuestionnaireCard(
+                  questionnaire: item,
+                  onChangedRadio: (SingingCharacter? value) {
+                    print(value);
+                  },
+                )),
+          Components.MainButton(
+              children: [
+                Text(
+                  "next".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(color: ColorsApp.white),
+                )
+              ],
+              onTap: () {}),
+          Components.MainButton(
+              children: [
+                Text(
+                  "previous".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(color: ColorsApp.white),
+                )
+              ],
+              onTap: () {
+                Navigator.pop(context);
+              }),
+        ]),
       ),
     );
   }

@@ -15,8 +15,8 @@ class User {
   String password;
   DocumentReference? reference;
 
-  final key = encrypt.Key.fromUtf8('my 32 length key................');
-  final iv = encrypt.IV.fromLength(16);
+  static encrypt.Key key = encrypt.Key.fromUtf8('my 32 length key................');
+  static encrypt.IV iv = encrypt.IV.fromLength(16);
 
   // var decrypted = encrypter.decrypt(encrypted, iv: iv);
 
