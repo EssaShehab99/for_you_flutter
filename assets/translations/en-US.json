@@ -78,5 +78,10 @@
   "edit": "Edit",
   "incorrect-data": "The password or phone number is incorrect",
   "scan-fingerprint": "Scan your fingerprint to authenticate",
-  "auth-confirm": "Authentication confirmation"
+  "auth-confirm": "Authentication confirmation",
+  "success-edit": "Success Edit",
+  "ok": "Ok",
+  "cancel": "Cancel",
+  "beneficiaries-message": "Beneficiaries directly without incurring the trouble of moving between the departments of the directorate. The application is also keen to provide its services quickly, proficiency and high quality to complete their transactions, follow up on their requirements and suggestions, and work on continuing development and improvement that are carried out in cooperation with all parties to reach the satisfaction of the beneficiary ."
+
 }

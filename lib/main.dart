@@ -4,10 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
 import 'package:for_you_flutter/data/models/user.dart';
+import 'package:for_you_flutter/data/network/sign_in_dao.dart';
 import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/data/setting/config.dart';
 import 'package:for_you_flutter/modules/description.dart';
+import 'package:for_you_flutter/modules/home.dart';
 import 'package:for_you_flutter/modules/sign_up.dart';
 import 'package:for_you_flutter/styles/theme_app.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -48,7 +50,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppStateManager()),
-        ChangeNotifierProvider(create: (context) => SignUpDAO()),
         ChangeNotifierProvider(
             create: (context) =>
                 HospitalManager()..initial(ConstantValues.hospitalsList)),
@@ -56,16 +57,24 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 CheckupManager()..setItems(ConstantValues.checkupList)),
         ChangeNotifierProvider(
+            create: (context) =>
+                SignInDAO()),
+        ChangeNotifierProvider(
             create: (context) => UserManager()
               ..setUser(User(
                   name: "براء",
                   phone: "+967777339975",
                   age: 20,
+                  gender: 1,
                   height: 1.8,
                   weight: 56,
-                  blood: "O+",
-                  socialStatus: "married".tr(),
-                  password: 'essab74'))),
+                  blood: 1,
+                  socialStatus: 1,
+                  password: 'a'))),
+        ChangeNotifierProxyProvider<UserManager,SignUpDAO>(
+            create: (context) => SignUpDAO(user: Provider.of<UserManager>(context, listen: false).getUser),
+        update: (context, userManager, _) =>SignUpDAO(user: userManager.getUser),
+        ),
         ChangeNotifierProvider(
             create: (context) => QuestionnairesManager()
               ..setItems(ConstantValues.questionnaireList)),
@@ -80,7 +89,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: QuestionnairesScreen()),
+            home: SafeArea(child: Home()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

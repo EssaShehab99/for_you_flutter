@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/models/user.dart';
@@ -26,117 +27,141 @@ class SignUp extends StatelessWidget {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  late String blood;
-  late String socialStatus;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
+     int? blood;
+     int? socialStatus;
+    int? gender;
+    bool isEdit = false;
+    User? user = Provider.of<UserManager>(context).getUser;
+    if (user != null) {
+      isEdit = true;
+
+      nameController.text = user.name;
+      phoneController.text = user.phone;
+      ageController.text = user.age.toString();
+      heightController.text = user.height.toString();
+      weightController.text = user.weight.toString();
+      gender = user.gender;
+      blood = user.blood;
+      socialStatus = user.socialStatus;
+    }
     return SafeArea(
       child: Scaffold(
         body: Components.bodyScreens([
           Flexible(
               child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: nameController,
-                        hint: "name".tr()),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.phone,
-                        controller: phoneController,
-                        hint: "phone-number".tr()),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: ageController,
-                        keyboardType: TextInputType.number,
-                        hint: "age".tr()),
-                    DropdownInput(
-                        items: ["man".tr(), "woman".tr()],
-                        hint: "gender".tr(),
-                        onChanged: (value) {}),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: heightController,
-                        keyboardType: TextInputType.number,
-                        hint: "height".tr()),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: weightController,
-                        keyboardType: TextInputType.number,
-                        hint: "weight".tr()),
-                    DropdownInput(
-                        items: ["A+", "A-", "B+", "B-", "O+", "O-", "AB"],
-                        hint: "blood-type".tr(),
-                        onChanged: (value) {
-                          blood = value;
-                        }),
-                    DropdownInput(
-                        items: [
-                          "married".tr(),
-                          "celibate".tr(),
-                          "widower".tr()
-                        ],
-                        hint: "social-status".tr(),
-                        onChanged: (value) {
-                          socialStatus = value;
-                        }),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'validate-value'.tr();
-                          }
-                          return null;
-                        },
-                        controller: passwordController,
-                        hint: "password".tr(),
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true),
-                    TextInput(
-                        validator: (value) {
-                          if (value == null || value!=passwordController.text) {
-                            return 'not-match'.tr();
-                          }
-                          return null;
-                        },
-                        textInputAction: TextInputAction.done,
-                        controller: TextEditingController(),
-                        hint: "confirm".tr(),
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true),
-                    Components.MainButton(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    controller: nameController,
+                    hint: "name".tr()),
+                TextInput(
+                    enabled: !isEdit,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.phone,
+                    controller: phoneController,
+                    hint: "phone-number".tr()),
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    controller: ageController,
+                    keyboardType: TextInputType.number,
+                    hint: "age".tr()),
+                DropdownInput(
+                    items: ConstantValues.gender,
+                    hint: "gender".tr(),
+                    selectedValue: gender==null?null:ConstantValues.gender[gender],
+                    onChanged: (value) {
+                      gender=ConstantValues.gender.indexOf(value);
+                    }),
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    controller: heightController,
+                    keyboardType: TextInputType.number,
+                    hint: "height".tr()),
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    hint: "weight".tr()),
+                DropdownInput(
+                    items: ConstantValues.bloodType,
+                    hint: "blood-type".tr(),
+                    selectedValue: blood==null?null:ConstantValues.bloodType[blood],
+                    onChanged: (value) {
+                      blood = ConstantValues.bloodType.indexOf(value);
+                    }),
+                DropdownInput(
+                    items: ConstantValues.socialStatusList,
+                    hint: "social-status".tr(),
+                    selectedValue: socialStatus==null?null:ConstantValues.socialStatusList[socialStatus],
+                    onChanged: (value) {
+                      socialStatus = ConstantValues.socialStatusList.indexOf(value);
+                    }),
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'validate-value'.tr();
+                      }
+                      return null;
+                    },
+                    controller: passwordController,
+                    hint: "password".tr(),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true),
+                TextInput(
+                    validator: (value) {
+                      if (value == null || value != passwordController.text) {
+                        return 'not-match'.tr();
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.done,
+                    controller: TextEditingController(),
+                    hint: "confirm".tr(),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true),
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return Components.MainButton(
                         children: [
-                          Text(
-                            "next".tr(),
+                          isLoading
+                              ? CircularProgressIndicator(
+                            color: ColorsApp.white,
+                          )
+                              : Text(
+                            isEdit ? "edit".tr() : "next".tr(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
@@ -145,41 +170,83 @@ class SignUp extends StatelessWidget {
                         ],
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
-                            Provider.of<UserManager>(context,listen: false).setUser(User(
-                              name: nameController.text,
-                                phone: phoneController.text,
-                                age: int.parse(ageController.text),
-                                height: double.parse(heightController.text),
-                                weight: double.parse(weightController.text),
-                                blood: blood,
-                                socialStatus: socialStatus,
-                                password: passwordController.text));
-                          Provider.of<SignUpDAO>(context, listen: false).user=Provider.of<UserManager>(context, listen: false).getUser;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerifyPhone(),
-                              ));
+                            setState((){
+                              isLoading=true;
+                            });
+                            if (!isEdit) {
+                              Provider.of<UserManager>(context, listen: false)
+                                  .setUser(User(
+                                      name: nameController.text,
+                                      phone: phoneController.text,
+                                      age: int.parse(ageController.text),
+                                      height: double.parse(heightController.text),
+                                      weight: double.parse(weightController.text),
+                                      blood: blood!,
+                                      gender: gender!,
+                                      socialStatus: socialStatus!,
+                                      password: passwordController.text));
+                              // Provider.of<SignUpDAO>(context, listen: false).user =
+                              //     Provider.of<UserManager>(context, listen: false)
+                              //         .getUser;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VerifyPhone(),
+                                  ));
+                            } else {
+                              Provider.of<SignUpDAO>(context, listen: false)
+                                  .updateUser(User(
+                                      name: nameController.text,
+                                      phone: phoneController.text,
+                                      age: int.parse(ageController.text),
+                                      height: double.parse(heightController.text),
+                                      weight: double.parse(weightController.text),
+                                      blood: blood!,
+                                      gender: gender!,
+                                      socialStatus: socialStatus!,
+                                      password: passwordController.text)).whenComplete((){
+                                setState((){
+                                  isLoading=false;
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green,
+                                    content:  Text("success-edit".tr(),style: Theme.of(context).textTheme.bodyText1?.copyWith(color: CupertinoColors.white),),
+                                  ));
+                                });
+                                Provider.of<UserManager>(context, listen: false)
+                                    .setUser(User(
+                                    name: nameController.text,
+                                    phone: phoneController.text,
+                                    age: int.parse(ageController.text),
+                                    height: double.parse(heightController.text),
+                                    weight: double.parse(weightController.text),
+                                    blood: blood!,
+                                    gender: gender!,
+                                    socialStatus: socialStatus!,
+                                    password: passwordController.text));
+                              });
+                            }
                           }
-                        }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "has-account".tr(),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.all(
-                              Colors.white.withOpacity(0.0))),
-                    )
-                  ],
+                        });
+                  }
                 ),
-              ))
+                SizedBox(
+                  height: 10,
+                ),
+                if (!isEdit)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "has-account".tr(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.white.withOpacity(0.0))),
+                  )
+              ],
+            ),
+          ))
         ]),
       ),
     );

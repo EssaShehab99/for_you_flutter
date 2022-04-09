@@ -44,6 +44,7 @@ dependencies:
   local_auth: ^1.1.11
   open_file: ^3.2.1
   firebase_storage: ^10.2.11
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:

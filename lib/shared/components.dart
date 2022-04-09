@@ -36,37 +36,40 @@ class Components {
             )),
       );
 
-  static Widget homeCard({String? text, String? icon}) =>
-      Container(
-        margin: EdgeInsets.all(ConstantValues.padding * 0.5),
-        height: 200,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: ColorsApp.primary,
-            boxShadow: [
-              BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
-            ]),
-        padding: EdgeInsets.only(left: ConstantValues.padding * 0.5),
-        child: Column(
-          children: [
-            icon != null
-                ? Expanded(child: SvgPicture.asset(icon))
-                : SizedBox.shrink(),
-            Expanded(
-                child: Center(
-                    child: Builder(
-                        builder: (context) =>
-                            Text(
-                              text ?? "",
+  static Widget homeCard({String? text, String? icon,GestureTapCallback? onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          margin: EdgeInsets.all(ConstantValues.padding * 0.5),
+          height: 200,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: ColorsApp.primary,
+              boxShadow: [
+                BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
+              ]),
+          padding: EdgeInsets.only(left: ConstantValues.padding * 0.5),
+          child: Column(
+            children: [
+              icon != null
+                  ? Expanded(child: SvgPicture.asset(icon))
+                  : SizedBox.shrink(),
+              Expanded(
+                  child: Center(
+                      child: Builder(
+                          builder: (context) =>
+                              Text(
+                                text ?? "",
 
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(
-                                  color: ColorsApp.white, fontSize: 15),
-                            ))))
-          ],
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                    color: ColorsApp.white, fontSize: 15),
+                              ))))
+            ],
+          ),
         ),
       );
 
@@ -113,4 +116,17 @@ class Components {
           ],
         ),
       );
+ static Future<void> showErrorDialog({required BuildContext context, required List<Widget> children,bool? barrierDismissible}) async {
+    showDialog(
+        context: context,barrierDismissible: barrierDismissible??true,
+        builder: (context) {
+          return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          ),
+        );
+        });
+  }
+
 }

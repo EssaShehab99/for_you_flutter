@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:for_you_flutter/data/setting/config.dart';
@@ -8,12 +7,15 @@ import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:provider/provider.dart';
 import '../data/models/user.dart';
+import '../data/network/sign_in_dao.dart';
 import '../data/network/sign_up_dao.dart';
 import '../data/providers/user_manager.dart';
 import '../shared/components.dart';
 import '../shared/text_input.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:easy_localization/easy_localization.dart' as localized;
+
 
 class SignIn extends StatelessWidget {
   SignIn({Key? key}) : super(key: key);
@@ -36,7 +38,7 @@ class SignIn extends StatelessWidget {
         if (value) {
           Config.getUser().then((value) {
             if (value != null) {
-              Provider.of<SignUpDAO>(context, listen: false)
+              Provider.of<SignInDAO>(context, listen: false)
                   .signIn(value[0], value[1])
                   .then((value) {
                 if (value != null) {
@@ -54,34 +56,28 @@ class SignIn extends StatelessWidget {
         }
       });
     } on Services.PlatformException catch (e) {
-      showErrorDialog(context);
+      showErrorDialog(
+        context,
+      );
       return;
     } catch (e) {
       showErrorDialog(context);
     }
   }
 
-  void showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                      child: Icon(
-                    Icons.info_outline,
-                    color: ColorsApp.primary,
-                    size: 35,
-                  )),
-                  Text(
-                    "error-authentication".tr(),
-                    style: Theme.of(context).textTheme.headline1,
-                  )
-                ],
-              ),
-            ));
-  }
+  showErrorDialog(BuildContext context) =>
+      Components.showErrorDialog(context: context, children: [
+        Center(
+            child: Icon(
+          Icons.info_outline,
+          color: ColorsApp.primary,
+          size: 35,
+        )),
+        Text(
+          "error-authentication".tr(),
+          style: Theme.of(context).textTheme.headline1,
+        )
+      ]);
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +93,7 @@ class SignIn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextInput(
+                  textDirection: TextDirection.ltr,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'validate-value'.tr();
@@ -110,6 +107,7 @@ class SignIn extends StatelessWidget {
                 TextInput(
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
+                    textInputAction: TextInputAction.done,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'validate-value'.tr();
@@ -160,7 +158,7 @@ class SignIn extends StatelessWidget {
                                 encrypt.Encrypted encrypted = encrypter.encrypt(
                                     passwordController.text,
                                     iv: User.iv);
-                                Provider.of<SignUpDAO>(context, listen: false)
+                                Provider.of<SignInDAO>(context, listen: false)
                                     .signIn(
                                         phoneController.text, encrypted.base64)
                                     .then((value) {

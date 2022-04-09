@@ -15,10 +15,12 @@ class DropdownInput extends StatefulWidget {
       this.width,
       this.isCheckBox,
       this.onCheckBox,
+      this.selectedValue,
        this.onChanged})
       : super(key: key);
   final List<String>? items;
   final String? hint;
+  final String? selectedValue;
   final double? width;
   final bool? isCheckBox;
   final ValueChanged<String>? onChanged;
@@ -35,6 +37,7 @@ class _DropdownInputState extends State<DropdownInput> {
 
   @override
   void initState() {
+    selectedValue=widget.selectedValue;
     for(var item in Provider.of<HospitalManager>(context,listen: false).hospitalList)
       this.selected.add(item.isChecked);
     super.initState();
@@ -59,7 +62,6 @@ class _DropdownInputState extends State<DropdownInput> {
                 }
                 return null;
               },
-
               isDense: false,
               itemHeight: 55,
               style:

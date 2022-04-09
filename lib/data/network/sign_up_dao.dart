@@ -5,6 +5,7 @@ import 'package:for_you_flutter/data/models/user.dart' as UserModel;
 import 'package:for_you_flutter/data/providers/user_manager.dart';
 
 class SignUpDAO extends ChangeNotifier {
+  SignUpDAO({this.user});
   FirebaseAuth auth = FirebaseAuth.instance;
   final CollectionReference collection =
       FirebaseFirestore.instance.collection('user');
@@ -19,18 +20,7 @@ class SignUpDAO extends ChangeNotifier {
     if (user != null) return collection.doc(user!.phone).set(user!.toJson());
   }
 
-  Future<UserModel.User?> signIn(String phone, String password) async {
-    UserModel.User? user;
-    try {
-      await collection.doc(phone).get().then((value) {
-        if ((value.data() as Map<String, dynamic>)["password"] == password) {
-          user = UserModel.User.fromJson(
-              value.data() as Map<String, dynamic>);
-        }
-      });
-    } catch (e) {}
-    return user;
-  }
+
 
   Future<void> verifyPhone({
     required PhoneVerificationCompleted verificationCompleted,
@@ -66,5 +56,10 @@ class SignUpDAO extends ChangeNotifier {
     } catch (_) {
       onFailed();
     }
+  }
+
+  Future<void> updateUser(UserModel.User user) async {
+    await collection.doc(user.phone).update(user.toJson());
+    return Future.value();
   }
 }

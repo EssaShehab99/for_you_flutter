@@ -9,8 +9,9 @@ class User {
   int age;
   double height;
   double weight;
-  String blood;
-  String socialStatus;
+  int blood;
+  int gender;
+  int socialStatus;
   String password;
   DocumentReference? reference;
 
@@ -27,6 +28,7 @@ class User {
       required this.height,
       required this.weight,
       required this.blood,
+      required this.gender,
       required this.socialStatus,
       required this.password});
 
@@ -35,6 +37,7 @@ class User {
       phone: json["phone"],
       age: json["age"],
       height: json["height"],
+      gender: json["gender"],
       weight: json["weight"],
       blood: json["blood"],
       socialStatus: json["socialStatus"],
@@ -47,6 +50,7 @@ class User {
       "name": name,
       "phone": phone,
       "age": age,
+      "gender": gender,
       "height": height,
       "weight": weight,
       "blood": blood,

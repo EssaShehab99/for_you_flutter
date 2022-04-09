@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:for_you_flutter/data/models/checkup.dart';
+import 'package:for_you_flutter/data/models/hospital.dart';
+import 'package:for_you_flutter/data/models/questionnaire.dart';
 import 'package:for_you_flutter/data/network/account_dao.dart';
 import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
@@ -13,12 +16,23 @@ import '../constants/constant_values.dart';
 import '../data/providers/user_manager.dart';
 import '../shared/components.dart';
 import '../styles/colors_app.dart';
+import 'home.dart';
 
 class AssociatedHospitals extends StatelessWidget {
   const AssociatedHospitals({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Questionnaire> questionnaires =
+        Provider.of<QuestionnairesManager>(context, listen: false)
+            .questionnaireList;
+
+    List<Checkup> checkupList =
+        Provider.of<CheckupManager>(context, listen: false).checkupList;
+    List<Hospital> hospitalList =
+        Provider.of<HospitalManager>(context, listen: false).hospitalList;
+    bool isLoading = false;
+
     return SafeArea(
       child: Scaffold(
         body: Consumer<HospitalManager>(builder: (context, value, child) {
@@ -70,27 +84,45 @@ class AssociatedHospitals extends StatelessWidget {
                 ),
               )),
             Flexible(
-              child: Components.MainButton(
-                  children: [
-                    Text(
-                      "sign-up".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {
-                    Provider.of<AccountDAO>(context, listen: false)
-                    ..setCheckup(Provider.of<CheckupManager>(
-                        context,
-                        listen: false)
-                        .checkupList)
-                        ..setQuestionnaire(Provider.of<QuestionnairesManager>(
-                                context,
-                                listen: false)
-                            .questionnaireList);
-                  }),
+              child: StatefulBuilder(builder: (context, setState) {
+                return Components.MainButton(
+                    children: [
+                      isLoading
+                          ? CircularProgressIndicator(
+                              color: ColorsApp.white,
+                            )
+                          : Text(
+                              "sign-up".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: ColorsApp.white),
+                            )
+                    ],
+                    onTap: () {
+                      if(!isLoading){
+                        Provider.of<AccountDAO>(context, listen: false)
+                            .setInformation(
+                            hospitalList: hospitalList,
+                            checkupList: checkupList,
+                            questionnaires: questionnaires)
+                            .whenComplete(() {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ));
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      }
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                    });
+              }),
             )
           ]);
         }),

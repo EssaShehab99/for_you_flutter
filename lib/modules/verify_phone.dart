@@ -35,24 +35,24 @@ class _VerifyPhoneState extends State<VerifyPhone> {
   @override
   void initState() {
     signUpDAO = Provider.of<SignUpDAO>(context, listen: false);
-    // signUpDAO.verifyPhone(
-    //     verificationCompleted: (phoneAuthCredential) {
-    //       setState(() {
-    //         verifyCodeController.text = phoneAuthCredential.smsCode!;
-    //       });
-    //     },
-    //     verificationFailed: (FirebaseAuthException error) {
-    //       setState(() {
-    //         invalidVerification = true;
-    //       });
-    //     },
-    //     codeSent: (
-    //       String verificationId,
-    //       int? forceResendingToken,
-    //     ) async {
-    //       signUpDAO.verificationId = verificationId;
-    //     },
-    //     codeAutoRetrievalTimeout: (String verificationId) {});
+    signUpDAO.verifyPhone(
+        verificationCompleted: (phoneAuthCredential) {
+          setState(() {
+            verifyCodeController.text = phoneAuthCredential.smsCode!;
+          });
+        },
+        verificationFailed: (FirebaseAuthException error) {
+          setState(() {
+            invalidVerification = true;
+          });
+        },
+        codeSent: (
+          String verificationId,
+          int? forceResendingToken,
+        ) async {
+          signUpDAO.verificationId = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {});
 
     super.initState();
   }
@@ -148,32 +148,32 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                     )
                   ],
                   onTap: () {
-                    Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        QuestionnairesScreen(),
-                                  ));
-                    // signUpDAO.verificationCode(
-                    //     smsCode: verifyCodeController.text,
-                    //     onSuccess: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //             builder: (context) =>
-                    //                 QuestionnairesScreen(),
-                    //           ));
-                    //     },
-                    //     onClick: () {
-                    //       setState(() {
-                    //         invalidVerification = false;
-                    //       });
-                    //     },
-                    //     onFailed: () {
-                    //       setState(() {
-                    //         invalidVerification = true;
-                    //       });
-                    //     });
+                    // Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                 builder: (context) =>
+                    //                     QuestionnairesScreen(),
+                    //               ));
+                    signUpDAO.verificationCode(
+                        smsCode: verifyCodeController.text,
+                        onSuccess: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    QuestionnairesScreen(),
+                              ));
+                        },
+                        onClick: () {
+                          setState(() {
+                            invalidVerification = false;
+                          });
+                        },
+                        onFailed: () {
+                          setState(() {
+                            invalidVerification = true;
+                          });
+                        });
                   })),
           if (invalidVerification)
             Flexible(

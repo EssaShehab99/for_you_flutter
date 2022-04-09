@@ -7,7 +7,6 @@ class Config {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isEnglish", isEnglish);
     EasyLocalization.of(context)?.setLocale(isEnglish?Locale('en','US'):Locale('ar','SA'));
-    print('rrrrrrrrrrr ${isEnglish} rrrrrrrrrr');
   }
 
   static Future<void> getLocal(BuildContext context) async {
@@ -16,6 +15,7 @@ class Config {
   }
   static  Future<void> setUser(String phone,String password)async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.remove("phone-password");
     await prefs.setStringList("phone-password", [phone,password]);
   }
   static Future<List<String>?> getUser()async {
