@@ -9,6 +9,7 @@ import 'package:for_you_flutter/shared/components.dart';
 import 'package:for_you_flutter/shared/text_input.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/constant_values.dart';
 import '../data/models/checkup.dart';
@@ -16,11 +17,8 @@ import '../styles/colors_app.dart';
 import 'dropdown_input.dart';
 
 class CheckupCard extends StatefulWidget {
-  const CheckupCard(
-      {Key? key, required this.checkup})
-      : super(key: key);
+  const CheckupCard({Key? key, required this.checkup}) : super(key: key);
   final Checkup checkup;
-
 
   @override
   State<CheckupCard> createState() => _CheckupCardState();
@@ -28,9 +26,9 @@ class CheckupCard extends StatefulWidget {
 
 class _CheckupCardState extends State<CheckupCard> {
 
+
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 175,
       width: double.infinity,
@@ -47,44 +45,58 @@ class _CheckupCardState extends State<CheckupCard> {
         children: [
           Expanded(
               child: Text(
-                widget.checkup.name,
-                style: Theme.of(context).textTheme.headline1,
-              )),
-          Expanded(child: Row(
+            widget.checkup.name,
+            style: Theme.of(context).textTheme.headline1,
+          )),
+          Expanded(
+              child: Row(
             children: [
               // for(int i=0;i<widget.checkup.numberAttach;i++)
-                Flexible(flex: 2,child: Padding(
-                  padding:  EdgeInsetsDirectional.only(end: ConstantValues.padding),
-                  child: InkWell(onTap: () {
-                    Components.selectFile(allowedExtensions: ["pdf"]).then((value) {
-                     setState(() {
-                       if(value!=null){
-                         if(widget.checkup.checkupAttach.length==widget.checkup.numberAttach)
-                           widget.checkup.checkupAttach.removeAt(widget.checkup.numberAttach-1);
-                         if(widget.checkup.checkupAttach.contains(value.path))
-                           return;
-                         widget.checkup.checkupAttach.insert(0, value.path);
-                         Provider.of<CheckupManager>(context,listen: false).updateItem(widget.checkup);
-                       }else{
-                       }
-                     });
-                    });
-                  },child: CircleAvatar(child: Icon(Icons.add),radius: 30,)),
-                )),
+              Flexible(
+                  flex: 2,
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.only(end: ConstantValues.padding),
+                    child: InkWell(
+                        onTap: () {
+                          Components.selectFile(allowedExtensions: ["pdf"])
+                              .then((value) {
+                            setState(() {
+                              if (value != null) {
+                                if (widget.checkup.checkupAttach.length ==
+                                    widget.checkup.numberAttach)
+                                  widget.checkup.checkupAttach.removeAt(
+                                      widget.checkup.numberAttach - 1);
+                                if (widget.checkup.checkupAttach
+                                    .contains(value.path)) return;
+                                widget.checkup.checkupAttach
+                                    .insert(0, value.path);
+                                Provider.of<CheckupManager>(context,
+                                        listen: false)
+                                    .updateItem(widget.checkup);
+                              } else {}
+                            });
+                          });
+                        },
+                        child: CircleAvatar(
+                          child: Icon(Icons.add),
+                          radius: 30,
+                        )),
+                  )),
 
-              for(var item in widget.checkup.checkupAttach)
-                Flexible(child: TextButton(onPressed: ()async{
-                  await OpenFile.open(item);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           Scaffold(
-                  //               body: Container(
-                  //                   child: SfPdfViewer.file(
-                  //                       File(item),controller: PdfViewerController(),)))
-                  //     ));
-                }, child: Text("${widget.checkup.checkupAttach.indexOf(item)+1}",style: Theme.of(context).textTheme.bodyText1?.copyWith(decoration: TextDecoration.underline),)))
+              for (String item in widget.checkup.checkupAttach)
+                Flexible(
+                    child: TextButton(
+                        onPressed: () async {
+                          await File(item).exists()? await OpenFile.open(item):Components.launchUrl(item);
+                        },
+                        child: Text(
+                          "${widget.checkup.checkupAttach.indexOf(item) + 1}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(decoration: TextDecoration.underline),
+                        )))
             ],
           ))
         ],

@@ -13,17 +13,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class MapCard extends StatefulWidget {
- const MapCard({Key? key,this.onTapMap,this.initialPosition}) : super(key: key);
-  final LatLng? initialPosition;
+  const MapCard({Key? key, this.onTapMap, required this.initialPosition})
+      : super(key: key);
+  final LatLng initialPosition;
   final ArgumentCallback<LatLng>? onTapMap;
+
   @override
   State<MapCard> createState() => _MapCardState();
 }
 
 class _MapCardState extends State<MapCard> {
   List<Marker> markers = [];
-late  Completer<GoogleMapController> _controller ;
-late  CameraPosition initialCameraPosition ;
+  late Completer<GoogleMapController> _controller;
+
+  late CameraPosition initialCameraPosition;
 
   Future<void> checkPermission() async {
     Location location = new Location();
@@ -58,7 +61,7 @@ late  CameraPosition initialCameraPosition ;
           title: 'hospital-location'.tr(),
         ),
       ));
-     widget.onTapMap!(point);
+      widget.onTapMap!(point);
     });
   }
 
@@ -66,10 +69,11 @@ late  CameraPosition initialCameraPosition ;
   void initState() {
     checkPermission();
     _controller = Completer();
-     initialCameraPosition = CameraPosition(
-      target: widget.initialPosition??LatLng(24.71320026053638, 46.67536760671966),
+    initialCameraPosition = CameraPosition(
+      target: widget.initialPosition,
       zoom: 15,
     );
+    _handleTap(widget.initialPosition);
     super.initState();
   }
 

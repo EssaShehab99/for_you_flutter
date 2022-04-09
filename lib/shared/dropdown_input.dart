@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../data/providers/hospitals_manager.dart';
 import '../styles/colors_app.dart';
-import 'dropdown_multi_select.dart';
 
 class DropdownInput extends StatefulWidget {
   DropdownInput(
@@ -38,8 +37,10 @@ class _DropdownInputState extends State<DropdownInput> {
   @override
   void initState() {
     selectedValue=widget.selectedValue;
-    for(var item in Provider.of<HospitalManager>(context,listen: false).hospitalList)
+    for(var item in Provider.of<HospitalManager>(context,listen: false).hospitalList) {
+      print(item.isChecked);
       this.selected.add(item.isChecked);
+    }
     super.initState();
   }
 
@@ -88,21 +89,21 @@ class _DropdownInputState extends State<DropdownInput> {
               onChanged: (_) {},
               value: selectedValue,
               items: widget.items!
-                  .map((x) => DropdownMenuItem(
+                  .map((item) => DropdownMenuItem(
                       child: StatefulBuilder(
                         builder: (context, setStateChild) => _SelectRow(
                             onChange: (value) {
                               setStateChild(() {
-                                selected[widget.items!.indexOf(x)] = value;
+                                selected[widget.items!.indexOf(item)] = value;
                                 // selectedValue = value.toString();
                                 widget.onCheckBox!=null?widget.onCheckBox!(selected):null;
                               });
 
                             },
-                            select: selected[widget.items!.indexOf(x)],
-                            text: x),
+                            select: selected[widget.items!.indexOf(item)],
+                            text: item),
                       ),
-                      value: x + selected.length.toString()))
+                      value: item + selected.length.toString()))
                   .toList(),
             )
           : DropdownButtonFormField(

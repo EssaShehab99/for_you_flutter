@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/network/account_dao.dart';
 import 'package:for_you_flutter/data/providers/user_manager.dart';
+import 'package:for_you_flutter/modules/associated_hospitals.dart';
 import 'package:for_you_flutter/modules/questionnaires_screen.dart';
 import 'package:for_you_flutter/modules/sign_in.dart';
 import 'package:for_you_flutter/modules/sign_up.dart';
@@ -17,6 +18,8 @@ import '../constants/constant_values.dart';
 import '../data/models/checkup.dart';
 import '../data/models/questionnaire.dart';
 import '../data/network/sign_up_dao.dart';
+import '../data/providers/checkup_manager.dart';
+import '../data/providers/hospitals_manager.dart';
 import '../data/providers/questionnaires_manager.dart';
 import '../data/setting/config.dart';
 import '../shared/checkup_card.dart';
@@ -32,6 +35,10 @@ class Home extends StatelessWidget {
     AccountDAO accountDAO = Provider.of<AccountDAO>(context);
     QuestionnairesManager questionnairesManager =
         Provider.of<QuestionnairesManager>(context);
+    CheckupManager checkupManager =
+        Provider.of<CheckupManager>(context);
+    HospitalManager hospitalManager =
+        Provider.of<HospitalManager>(context);
     return SafeArea(
       child: Scaffold(
         body: Components.bodyScreens([
@@ -84,7 +91,7 @@ class Home extends StatelessWidget {
           Flexible(
               child: buildColumn(
                   onTapTow: () async {
-                    late BuildContext dialogContext;
+                     BuildContext? dialogContext;
                     showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -108,31 +115,70 @@ class Home extends StatelessWidget {
                                       )
                                     ],
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pop(dialogContext!);
+                                      dialogContext=null;
                                     })
                               ],
                             ),
                           );
                         });
-
                     accountDAO.getQuestionnaires().then((value) {
-                      Navigator.pop(dialogContext);
-                      questionnairesManager.setItems(value);
-                      questionnairesManager.isCloud = true;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => QuestionnairesScreen()));
+                      if(dialogContext!=null){
+                        Navigator.pop(dialogContext!);
+                        questionnairesManager.setItems(value);
+                        questionnairesManager.isCloud = true;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QuestionnairesScreen()));
+                      }
                     });
 
                     // Navigator.push(context,MaterialPageRoute(builder: (context) => QuestionnairesScreen()));
                   },
                   onTapOne: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckupsScreen(),
-                        ));
+                    BuildContext? dialogContext;
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (ctx) {
+                          dialogContext = ctx;
+                          return AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(height: 25),
+                                CircularProgressIndicator(),
+                                SizedBox(height: 25),
+                                Components.MainButton(
+                                    children: [
+                                      Text(
+                                        "cancel".tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(color: ColorsApp.white),
+                                      )
+                                    ],
+                                    onTap: () {
+                                      Navigator.pop(dialogContext!);
+                                      dialogContext=null;
+                                    })
+                              ],
+                            ),
+                          );
+                        });
+                    accountDAO.getCheckups().then((value) {
+                      if(dialogContext!=null){
+                        Navigator.pop(dialogContext!);
+                        checkupManager.setItems(value);
+                        checkupManager.isCloud = true;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CheckupsScreen()));
+                      }
+                    });
                   },
                   textOne: "medical-examinations".tr(),
                   imageOne: ConstantImage.iconOne,
@@ -140,9 +186,58 @@ class Home extends StatelessWidget {
                   imageTow: ConstantImage.iconSix)),
           Flexible(
               child: buildColumn(
+                onTapOne: () {
+                  BuildContext? dialogContext;
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (ctx) {
+                        dialogContext = ctx;
+                        return AlertDialog(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 25),
+                              CircularProgressIndicator(),
+                              SizedBox(height: 25),
+                              Components.MainButton(
+                                  children: [
+                                    Text(
+                                      "cancel".tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(color: ColorsApp.white),
+                                    )
+                                  ],
+                                  onTap: () {
+                                    Navigator.pop(dialogContext!);
+                                    dialogContext=null;
+                                  })
+                            ],
+                          ),
+                        );
+                      });
+                  accountDAO.getHospitals().then((value) {
+                    if(dialogContext!=null){
+                      Navigator.pop(dialogContext!);
+                      value.forEach((element) {
+                        hospitalManager.checkHospital(element.id,element.location);
+                      });
+                      hospitalManager.isCloud = true;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AssociatedHospitals()));
+                    }
+                  });
+                },
                   textOne: "hospital-network".tr(),
                   imageOne: ConstantImage.iconFive,
                   textTwo: "phone".tr(),
+                  onTapTow: (){
+                    Components.launchUrl("920022776",call: true);
+                  },
                   imageTow: ConstantImage.iconThree)),
           Flexible(
             child: Components.MainButton(

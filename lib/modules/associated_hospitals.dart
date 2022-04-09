@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_you_flutter/data/models/checkup.dart';
@@ -23,16 +24,21 @@ class AssociatedHospitals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isEdit = false;
+    AccountDAO accountDAO = Provider.of<AccountDAO>(context, listen: false);
     List<Questionnaire> questionnaires =
         Provider.of<QuestionnairesManager>(context, listen: false)
             .questionnaireList;
-
     List<Checkup> checkupList =
         Provider.of<CheckupManager>(context, listen: false).checkupList;
-    List<Hospital> hospitalList =
-        Provider.of<HospitalManager>(context, listen: false).hospitalList;
+    HospitalManager hospitalManager =
+        Provider.of<HospitalManager>(context, listen: false);
     bool isLoading = false;
-
+    if (hospitalManager.isCloud) {
+      isEdit = true;
+      hospitalManager.hospitalList.forEach((element) {
+      });
+    }
     return SafeArea(
       child: Scaffold(
         body: Consumer<HospitalManager>(builder: (context, value, child) {
@@ -78,7 +84,7 @@ class AssociatedHospitals extends StatelessWidget {
                     onTapMap: (point) {
                       value.hospitalList[8].location = point;
                     },
-                    initialPosition:
+                    initialPosition:value.hospitalList[8].location??
                         LatLng(24.71320026053638, 46.67536760671966),
                   ),
                 ),
@@ -92,7 +98,7 @@ class AssociatedHospitals extends StatelessWidget {
                               color: ColorsApp.white,
                             )
                           : Text(
-                              "sign-up".tr(),
+                              isEdit ? "edit".tr() : "sign-up".tr(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
@@ -100,27 +106,44 @@ class AssociatedHospitals extends StatelessWidget {
                             )
                     ],
                     onTap: () {
-                      if(!isLoading){
-                        Provider.of<AccountDAO>(context, listen: false)
-                            .setInformation(
-                            hospitalList: hospitalList,
-                            checkupList: checkupList,
-                            questionnaires: questionnaires)
-                            .whenComplete(() {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Home(),
-                              ));
-                          setState(() {
-                            isLoading = false;
-                          });
+                      if (!isLoading) {
+                        setState(() {
+                          isLoading = true;
+                          if (isEdit) {
+                            accountDAO.updateHospitals(hospitalManager.hospitalList).whenComplete((){
+                              setState(() {
+                                isLoading = false;
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text(
+                                    "success-edit".tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(color: CupertinoColors.white),
+                                  ),
+                                ));
+                              });
+                            });
+                          } else {
+                            accountDAO
+                                .setInformation(
+                                    hospitalList: hospitalManager.hospitalList,
+                                    checkupList: checkupList,
+                                    questionnaires: questionnaires)
+                                .whenComplete(() {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Home(),
+                                  ));
+                              setState(() {
+                                isLoading = false;
+                              });
+                            });
+                          }
                         });
                       }
-                      setState(() {
-                        isLoading = true;
-                      });
-
                     });
               }),
             )

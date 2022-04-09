@@ -23,10 +23,11 @@ class QuestionnairesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isEdit=false;
-    QuestionnairesManager questionnairesManager=Provider.of<QuestionnairesManager>(context);
-    if(questionnairesManager.isCloud){
-      isEdit=true;
+    bool isEdit = false;
+    QuestionnairesManager questionnairesManager =
+        Provider.of<QuestionnairesManager>(context);
+    if (questionnairesManager.isCloud) {
+      isEdit = true;
     }
     bool isLoading = false;
 
@@ -35,82 +36,98 @@ class QuestionnairesScreen extends StatelessWidget {
         body: Components.bodyScreens([
           Flexible(
               child: Center(
-                child: Text(
-                  "welcome".tr()+" "+Provider.of<UserManager>(context,listen: false).getUser!.name,style: Theme.of(context).textTheme.headline1,
-                ),
-              )),
+            child: Text(
+              "welcome".tr() +
+                  " " +
+                  Provider.of<UserManager>(context, listen: false)
+                      .getUser!
+                      .name,
+              style: Theme.of(context).textTheme.headline1,
+            ),
+          )),
           Flexible(
               child: SizedBox(
-                height: 50,
-              )),
-          for(Questionnaire item in isEdit?questionnairesManager.questionnaireList:ConstantValues.questionnaireList)
+            height: 50,
+          )),
+          for (Questionnaire item in isEdit
+              ? questionnairesManager.questionnaireList
+              : ConstantValues.questionnaireList)
             Flexible(
-                child:QuestionnaireCard(
-                  questionnaire: item,
-                  isEdit: isEdit,
-                  onChangedRadio: (SingingCharacter? value) {
-                    print(value);
-                  },
-                )),
-          StatefulBuilder(
-            builder: (context, setState)  {
-              return Components.MainButton(
-                  children: [
-                    isLoading
-                        ? CircularProgressIndicator(
-                      color: ColorsApp.white,
-                    )
-                        : Text(
-                      isEdit?"edit".tr():"next".tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(color: ColorsApp.white),
-                    )
-                  ],
-                  onTap: () {
-                    if(isEdit){
-                      setState((){
-                        isLoading=true;
+                child: QuestionnaireCard(
+              questionnaire: item,
+              isEdit: isEdit,
+              onChangedRadio: (SingingCharacter? value) {
+                print(value);
+              },
+            )),
+          StatefulBuilder(builder: (context, setState) {
+            return Components.MainButton(
+                children: [
+                  isLoading
+                      ? CircularProgressIndicator(
+                          color: ColorsApp.white,
+                        )
+                      : Text(
+                          isEdit ? "edit".tr() : "next".tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(color: ColorsApp.white),
+                        )
+                ],
+                onTap: () {
+                  if (isEdit) {
+                    if(!isLoading){
+                      setState(() {
+                        isLoading = true;
                       });
-                      Provider.of<AccountDAO>(context,listen: false).updateQuestionnaires(questionnairesManager.questionnaireList).whenComplete((){
-                        setState((){
-                          isLoading=false;
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green,
-                            content:  Text("success-edit".tr(),style: Theme.of(context).textTheme.bodyText1?.copyWith(color: CupertinoColors.white),),
+                      Provider.of<AccountDAO>(context, listen: false)
+                          .updateQuestionnaires(
+                              questionnairesManager.questionnaireList)
+                          .whenComplete(() {
+                        setState(() {
+                          isLoading = false;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.green,
+                            content: Text(
+                              "success-edit".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: CupertinoColors.white),
+                            ),
                           ));
                         });
-                        Provider.of<AccountDAO>(context,listen: false).getQuestionnaires().then((value){
+                        Provider.of<AccountDAO>(context, listen: false)
+                            .getQuestionnaires()
+                            .then((value) {
                           questionnairesManager.setItems(value);
-                          questionnairesManager.isCloud=true;
+                          questionnairesManager.isCloud = true;
                         });
                       });
-
                     }
-                    else Navigator.push(
+                  } else
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CheckupsScreen(),
+                          builder: (context) => CheckupsScreen(),
                         ));
-
-                  });
-            }
-          ),
-   if(!isEdit)
-          Components.MainButton(
-              children: [
-                Text(
-                  "previous".tr(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: ColorsApp.white),
-                )
-              ],
-              onTap: () {
-                Navigator.pop(context);
-              }),
+                });
+          }),
+          if (!isEdit)
+            Components.MainButton(
+                children: [
+                  Text(
+                    "previous".tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(color: ColorsApp.white),
+                  )
+                ],
+                onTap: () {
+                  Navigator.pop(context);
+                }),
         ]),
       ),
     );

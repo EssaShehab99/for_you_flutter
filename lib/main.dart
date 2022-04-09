@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AppStateManager()),
         ChangeNotifierProvider(
             create: (context) =>
-                HospitalManager()..initial(ConstantValues.hospitalsList)),
+                HospitalManager()..setItems(ConstantValues.hospitalsList)),
         ChangeNotifierProvider(
             create: (context) =>
                 CheckupManager()..setItems(ConstantValues.checkupList)),
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: Home()),
+            home: SafeArea(child: Description()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

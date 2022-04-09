@@ -7,13 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:for_you_flutter/constants/constant_images.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../styles/colors_app.dart';
 import 'locale_switch.dart';
 
 class Components {
+  static Future<void> launchUrl(String url, {bool call = false}) async {
+    if (await (call ? canLaunch("tel: $url") : canLaunch(url))) {
+      await launch(call ? "tel: $url" : url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   static Widget MainButton(
-      {List<Widget>? children, GestureTapCallback? onTap}) =>
+          {List<Widget>? children, GestureTapCallback? onTap}) =>
       Container(
         height: 56,
         margin: EdgeInsets.only(top: ConstantValues.padding * 0.5),
@@ -29,14 +38,15 @@ class Components {
             focusColor: ColorsApp.white.withOpacity(0.0),
             highlightColor: ColorsApp.white.withOpacity(0.0),
             overlayColor:
-            MaterialStateProperty.all(Colors.white.withOpacity(0.0)),
+                MaterialStateProperty.all(Colors.white.withOpacity(0.0)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: children ?? [],
             )),
       );
 
-  static Widget homeCard({String? text, String? icon,GestureTapCallback? onTap}) =>
+  static Widget homeCard(
+          {String? text, String? icon, GestureTapCallback? onTap}) =>
       InkWell(
         onTap: onTap,
         child: Container(
@@ -46,7 +56,8 @@ class Components {
               borderRadius: BorderRadius.all(Radius.circular(20)),
               color: ColorsApp.primary,
               boxShadow: [
-                BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
+                BoxShadow(
+                    color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
               ]),
           padding: EdgeInsets.only(left: ConstantValues.padding * 0.5),
           child: Column(
@@ -57,16 +68,13 @@ class Components {
               Expanded(
                   child: Center(
                       child: Builder(
-                          builder: (context) =>
-                              Text(
+                          builder: (context) => Text(
                                 text ?? "",
-
-                                style: Theme
-                                    .of(context)
+                                style: Theme.of(context)
                                     .textTheme
                                     .bodyText1
                                     ?.copyWith(
-                                    color: ColorsApp.white, fontSize: 15),
+                                        color: ColorsApp.white, fontSize: 15),
                               ))))
             ],
           ),
@@ -74,8 +82,9 @@ class Components {
       );
 
   static Future<File?> selectFile({List<String>? allowedExtensions}) async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: allowedExtensions??['jpg', 'png']);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: allowedExtensions ?? ['jpg', 'png']);
 
     if (result != null) {
       return File(result.files.single.path!);
@@ -84,8 +93,7 @@ class Components {
     }
   }
 
-  static Widget bodyScreens(List<Widget> children) =>
-      SingleChildScrollView(
+  static Widget bodyScreens(List<Widget> children) => SingleChildScrollView(
         padding: EdgeInsets.all(ConstantValues.padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,8 +104,8 @@ class Components {
             ),
             Flexible(
                 child: SizedBox(
-                  height: 50,
-                )),
+              height: 50,
+            )),
             Flexible(
                 flex: 3,
                 child: Center(
@@ -109,24 +117,27 @@ class Components {
                 )),
             Flexible(
                 child: SizedBox(
-                  height: 50,
-                )),
-            for(Widget child in children)
-              child
+              height: 50,
+            )),
+            for (Widget child in children) child
           ],
         ),
       );
- static Future<void> showErrorDialog({required BuildContext context, required List<Widget> children,bool? barrierDismissible}) async {
+
+  static Future<void> showErrorDialog(
+      {required BuildContext context,
+      required List<Widget> children,
+      bool? barrierDismissible}) async {
     showDialog(
-        context: context,barrierDismissible: barrierDismissible??true,
+        context: context,
+        barrierDismissible: barrierDismissible ?? true,
         builder: (context) {
           return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
-        );
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: children,
+            ),
+          );
         });
   }
-
 }

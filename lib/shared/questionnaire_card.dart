@@ -55,16 +55,6 @@ class _QuestionnaireCardState extends State<QuestionnaireCard> {
     super.dispose();
   }
 
-  Future<void> _launch(String url) async {
-    print("gggggggggggggggggggggggggggggggggggg");
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +167,7 @@ class _QuestionnaireCardState extends State<QuestionnaireCard> {
                                 widget.questionnaire.isLocale
                                     ? await OpenFile.open(
                                         widget.questionnaire.answerAttach)
-                                    : _launch(
+                                    : Components.launchUrl(
                                         widget.questionnaire.answerAttach!);
                               },
                               child: widget.questionnaire.isLocale

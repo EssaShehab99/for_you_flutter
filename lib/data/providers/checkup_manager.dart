@@ -5,6 +5,7 @@ import '../models/checkup.dart';
 
 class CheckupManager extends ChangeNotifier{
   List<Checkup>  _checkupList=[];
+  bool isCloud=false;
 
   List<Checkup> get checkupList => _checkupList;
 
@@ -12,6 +13,7 @@ class CheckupManager extends ChangeNotifier{
     _checkupList[this._checkupList.indexWhere((element) => checkup.id==element.id)]=checkup;
   }
   void setItems(List<Checkup> checkup){
+    _checkupList.clear();
     this._checkupList.addAll(checkup);
   }
 

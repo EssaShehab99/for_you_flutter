@@ -16,11 +16,9 @@ import '../styles/colors_app.dart';
 import 'dropdown_input.dart';
 
 class AssociatedCard extends StatefulWidget {
-  const AssociatedCard({
-    Key? key,
-    required this.onChanged,
-     this.editingController
-  }) : super(key: key);
+  const AssociatedCard(
+      {Key? key, required this.onChanged, this.editingController})
+      : super(key: key);
   final ValueChanged<String> onChanged;
   final TextEditingController? editingController;
 
@@ -29,7 +27,8 @@ class AssociatedCard extends StatefulWidget {
 }
 
 class _AssociatedCardState extends State<AssociatedCard> {
-  bool isAnother=false;
+  bool isAnother = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,32 +49,40 @@ class _AssociatedCardState extends State<AssociatedCard> {
               child: DropdownInput(
             width: 200,
             isCheckBox: true,
-            onCheckBox: (List<bool> list){
-              for(int i=0;i<list.length;i++){
-                if(list[i]==true){
-                  Provider.of<HospitalManager>(context,listen: false).setCheck(i,true);
-                }else{
-                  Provider.of<HospitalManager>(context,listen: false).setCheck(i,false);
+            onCheckBox: (List<bool> list) {
+              for (int i = 0; i < list.length; i++) {
+                if (list[i] == true) {
+                  Provider.of<HospitalManager>(context, listen: false)
+                      .setCheck(i, true);
+                } else {
+                  Provider.of<HospitalManager>(context, listen: false)
+                      .setCheck(i, false);
                 }
               }
-                setState(() {
-                  if(list[8]==true)
-                    isAnother=true;
-                  else
-                    isAnother=false;
-                });
-              },/*
-            onChanged: (value) {
               setState(() {
-                widget.onChanged(value);
-                if(value=="another".tr())
-                  isAnother=true;
+                if (list[8] == true)
+                  isAnother = true;
+                else
+                  isAnother = false;
               });
-            },*/
+            },
             hint: "associated-hospitals".tr(),
-            items: List.generate(Provider.of<HospitalManager>(context,listen: false).hospitalList.length, (index) => Provider.of<HospitalManager>(context,listen: false).hospitalList[index].name),
+            items: List<String>.generate(
+                Provider.of<HospitalManager>(context, listen: false)
+                    .hospitalList
+                    .length,
+                (index) => Provider.of<HospitalManager>(context, listen: false)
+                    .hospitalList[index]
+                    .name!),
           )),
-          isAnother?TextInput(controller: widget.editingController??TextEditingController(),hint: "associated-hospitals".tr(),textInputAction: TextInputAction.done,):SizedBox.shrink()
+          isAnother
+              ? TextInput(
+                  controller:
+                      widget.editingController ?? TextEditingController(),
+                  hint: "associated-hospitals".tr(),
+                  textInputAction: TextInputAction.done,
+                )
+              : SizedBox.shrink()
         ],
       ),
     );
