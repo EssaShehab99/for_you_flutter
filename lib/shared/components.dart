@@ -61,10 +61,10 @@ class Components {
           height: 200,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: ColorsApp.primary,
+              color: ColorsApp.white,
               boxShadow: [
                 BoxShadow(
-                    color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
+                    color: ColorsApp.shadow, blurRadius: 5, spreadRadius: 1)
               ]),
           padding: EdgeInsets.only(left: ConstantValues.padding * 0.5),
           child: Column(
@@ -81,7 +81,7 @@ class Components {
                                     .textTheme
                                     .bodyText1
                                     ?.copyWith(
-                                        color: ColorsApp.white, fontSize: 15),
+                                        color: ColorsApp.primary, fontSize: 15),
                               ))))
             ],
           ),

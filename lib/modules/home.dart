@@ -41,6 +41,7 @@ class Home extends StatelessWidget {
         Provider.of<HospitalManager>(context);
     return SafeArea(
       child: Scaffold(
+
         body: Components.bodyScreens([
           Flexible(
               child: Center(

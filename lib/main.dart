@@ -35,14 +35,15 @@ Future<void> main() async {
       fallbackLocale: const Locale('en', 'US'),
       startLocale: const Locale('en', 'US'),
       saveLocale: true,
-      child: MyApp()));
+      child: MyApp(Initial: await Config.getInitial(),)));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  const MyApp({Key? key,required this.Initial}) : super(key: key);
+final bool Initial;
   @override
   Widget build(BuildContext context) {
+
     if (defaultTargetPlatform == TargetPlatform.android) {
       AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
     }
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: Description()),
+            home: SafeArea(child: Initial?SignIn():Description()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

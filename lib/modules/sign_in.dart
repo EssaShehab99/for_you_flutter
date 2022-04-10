@@ -16,7 +16,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:easy_localization/easy_localization.dart' as localized;
 
-
 class SignIn extends StatelessWidget {
   SignIn({Key? key}) : super(key: key);
   final TextEditingController phoneController = TextEditingController();
@@ -24,45 +23,47 @@ class SignIn extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final LocalAuthentication auth = LocalAuthentication();
 
-  Future<void> _authenticateWithBiometrics(BuildContext context) async {
+  Future<bool> _authenticateWithBiometrics(BuildContext context) async {
+    bool isAuth = false;
     try {
-      auth
-          .authenticate(
-              androidAuthStrings: AndroidAuthMessages(
-                  signInTitle: "auth-confirm".tr(), biometricHint: ""),
-              localizedReason: 'scan-fingerprint'.tr(),
-              useErrorDialogs: true,
-              stickyAuth: true,
-              biometricOnly: true)
-          .then((value) {
-        if (value) {
-          Config.getUser().then((value) {
-            if (value != null) {
-              Provider.of<SignInDAO>(context, listen: false)
-                  .signIn(value[0], value[1])
-                  .then((value) {
-                if (value != null) {
-                  Provider.of<UserManager>(context, listen: false)
-                      .setUser(value);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Home(),
-                      ));
-                }
-              });
-            }
-          });
+
+      bool authStatus = await auth.authenticate(
+          androidAuthStrings: AndroidAuthMessages(
+              signInTitle: "auth-confirm".tr(), biometricHint: ""),
+          localizedReason: 'scan-fingerprint'.tr(),
+          useErrorDialogs: true,
+          stickyAuth: true,
+          biometricOnly: true);
+      if (authStatus) {
+        List<String>? userData = await Config.getUser();
+        if (userData != null) {
+          isAuth = true;
+          User? user = await Provider.of<SignInDAO>(context, listen: false)
+              .signIn(userData[0], userData[1]);
+          if (user != null) {
+            Provider.of<UserManager>(context, listen: false).setUser(user);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ));
+          }
         }
-      });
+      } else {
+        isAuth = true;
+      }
     } on Services.PlatformException catch (e) {
+      isAuth = true;
       showErrorDialog(
         context,
       );
-      return;
+      return false;
     } catch (e) {
+      isAuth = true;
       showErrorDialog(context);
+      return false;
     }
+    return isAuth;
   }
 
   showErrorDialog(BuildContext context) =>
@@ -82,6 +83,7 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool? isValidate = true;
+    bool? isValidateFinger = true;
 
     return SafeArea(
       child: Scaffold(
@@ -93,7 +95,7 @@ class SignIn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextInput(
-                  textDirection: TextDirection.ltr,
+                    textDirection: TextDirection.ltr,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'validate-value'.tr();
@@ -118,90 +120,102 @@ class SignIn extends StatelessWidget {
                     hint: "password".tr(),
                     icon: Icons.password),
                 StatefulBuilder(
-                  builder: (context, setState) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (isValidate != null && !(isValidate!))
-                          Flexible(
-                            child: Text(
-                              "incorrect-data".tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1
-                                  ?.copyWith(color: Colors.red, fontSize: 15),
-                            ),
-                          ),
-                        Components.MainButton(
-                            children: [
-                              isValidate == null
-                                  ? CircularProgressIndicator(
-                                      color: ColorsApp.white,
-                                    )
-                                  : Text(
-                                      "sign-in".tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(color: ColorsApp.white),
-                                    )
-                            ],
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
-                                setState(() {
-                                  isValidate = null;
-                                });
-
-                                final encrypter =
-                                    encrypt.Encrypter(encrypt.AES(User.key));
-                                encrypt.Encrypted encrypted = encrypter.encrypt(
-                                    passwordController.text,
-                                    iv: User.iv);
-                                Provider.of<SignInDAO>(context, listen: false)
-                                    .signIn(
-                                        phoneController.text, encrypted.base64)
-                                    .then((value) {
-                                  if (value != null) {
-                                    Provider.of<UserManager>(context,
-                                            listen: false)
-                                        .setUser(value);
-                                    Config.setUser(
-                                        phoneController.text, encrypted.base64);
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Home(),
-                                        ));
-                                  } else {
-                                    setState(() {
-                                      isValidate = false;
-                                    });
-                                  }
-                                });
-                              }
-                            }),
-                      ],
-                    );
-                  },
-                ),
-                Components.MainButton(
+                  builder: (context, setState) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.fingerprint, color: ColorsApp.white, size: 35),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "sign-in-by-finger".tr(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(color: ColorsApp.white),
-                      )
+                      if (isValidate != null && !(isValidate!))
+                        Flexible(
+                          child: Text(
+                            "incorrect-data".tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(color: Colors.red, fontSize: 15),
+                          ),
+                        ),
+                      Components.MainButton(
+                          children: [
+                            isValidate == null
+                                ? CircularProgressIndicator(
+                                    color: ColorsApp.white,
+                                  )
+                                : Text(
+                                    "sign-in".tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(color: ColorsApp.white),
+                                  )
+                          ],
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                isValidate = null;
+                              });
+
+                              final encrypter =
+                                  encrypt.Encrypter(encrypt.AES(User.key));
+                              encrypt.Encrypted encrypted = encrypter.encrypt(
+                                  passwordController.text,
+                                  iv: User.iv);
+                              Provider.of<SignInDAO>(context, listen: false)
+                                  .signIn(
+                                      phoneController.text, encrypted.base64)
+                                  .then((value) {
+                                if (value != null) {
+                                  Provider.of<UserManager>(context,
+                                          listen: false)
+                                      .setUser(value);
+                                  Config.setUser(
+                                      phoneController.text, encrypted.base64);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Home(),
+                                      ));
+                                } else {
+                                  setState(() {
+                                    isValidate = false;
+                                  });
+                                }
+                              });
+                            }
+                          }),
+                      Components.MainButton(
+                          children: isValidateFinger == null
+                              ? [
+                                  CircularProgressIndicator(
+                                    color: ColorsApp.white,
+                                  )
+                                ]
+                              : [
+                                  Icon(Icons.fingerprint,
+                                      color: ColorsApp.white, size: 35),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "sign-in-by-finger".tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(color: ColorsApp.white),
+                                  )
+                                ],
+                          onTap: () {
+                            setState(() {
+                              isValidateFinger = null;
+                            });
+                            _authenticateWithBiometrics(context).then((value) {
+                              setState(() {
+                                isValidateFinger = false;
+                              });
+                            });
+                          }),
                     ],
-                    onTap: () {
-                      _authenticateWithBiometrics(context);
-                    }),
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),

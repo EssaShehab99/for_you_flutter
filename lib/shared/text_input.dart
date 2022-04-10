@@ -48,7 +48,7 @@ class TextInput extends StatelessWidget {
           border: InputBorder.none,
           contentPadding: EdgeInsets.all(10),
           hintText: hint,
-          hintStyle: Theme.of(context).textTheme.bodyText1,
+          hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic,),
           prefixIcon:
               icon == null ? null : Icon(icon, color: ColorsApp.primary),
         ),

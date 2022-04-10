@@ -22,9 +22,13 @@ class Config {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getStringList("phone-password");
   }
-  static Future<void> signOutUser()async {
+  static Future<void> setInitial()async {
     final prefs = await SharedPreferences.getInstance();
-     prefs.remove("phone-password");
+     prefs.setBool("splash",true);
+  }
+  static Future<bool> getInitial()async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("splash")??false;
   }
 
 }
