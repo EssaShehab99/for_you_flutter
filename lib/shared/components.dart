@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:for_you_flutter/constants/constant_images.dart';
 import 'package:for_you_flutter/constants/constant_values.dart';
+import 'package:for_you_flutter/data/providers/user_manager.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../styles/colors_app.dart';
@@ -40,7 +44,7 @@ class Components {
             overlayColor:
                 MaterialStateProperty.all(Colors.white.withOpacity(0.0)),
             child: Padding(
-              padding:  EdgeInsets.all(ConstantValues.padding*0.5),
+              padding: EdgeInsets.all(ConstantValues.padding * 0.5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: children ?? [],
@@ -142,5 +146,34 @@ class Components {
             ),
           );
         });
+  }
+
+  static Future<void> checkPermission(BuildContext context) async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        // return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        // return;
+      }
+    }
+
+    location.getLocation().then((value) {
+      if (value.latitude != null && value.longitude != null)
+        Provider.of<UserManager>(context, listen: false).setLocation(
+            LatLng(value.latitude!, value.longitude!));
+    });
   }
 }

@@ -22,6 +22,7 @@ class Hospital {
           ? LatLng(geoPoint.latitude, geoPoint.longitude)
           : null,
       isChecked: true,
+      name: json["name"]??ConstantValues.hospitalsList.firstWhere((element) => element.id==int.parse(id)).name
     );
   }
 
@@ -30,6 +31,7 @@ class Hospital {
       "location": location != null
           ? GeoPoint(location!.latitude, location!.longitude)
           : null,
+      "name": id==9?name:null
     };
   }
 }

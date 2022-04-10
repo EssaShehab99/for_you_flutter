@@ -66,7 +66,6 @@ class AccountDAO extends ChangeNotifier {
 
   Future<String> uploadFile(File file, String path) async {
     String url = "";
-    print(file.path);
     Reference reference = storageRef
         .child("$path/${DateTime.now()}-${file.path.split("/").last}");
     // storageRef.child("$path/${file.path.split("/").last}");
@@ -79,9 +78,6 @@ class AccountDAO extends ChangeNotifier {
 
   Future<bool> setCheckup(List<Checkup> checkupList) async {
     bool status = false;
-checkupList.forEach((element) {
-  print(element.toJson());
-});
     try {
       for (Checkup checkup in checkupList) {
         for (FileAndDate element in checkup.checkupAttach) {

@@ -16,11 +16,9 @@ import '../styles/colors_app.dart';
 import 'dropdown_input.dart';
 
 class AssociatedCard extends StatefulWidget {
-  const AssociatedCard(
-      {Key? key, required this.onChanged, this.editingController})
-      : super(key: key);
-  final ValueChanged<String> onChanged;
-  final TextEditingController? editingController;
+  const AssociatedCard({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AssociatedCard> createState() => _AssociatedCardState();
@@ -28,9 +26,35 @@ class AssociatedCard extends StatefulWidget {
 
 class _AssociatedCardState extends State<AssociatedCard> {
   bool isAnother = false;
+  late TextEditingController anotherController;
+  late HospitalManager hospitalManager;
+
+  @override
+  void initState() {
+    hospitalManager = Provider.of<HospitalManager>(context, listen: false);
+    anotherController = TextEditingController();
+    if(hospitalManager.hospitalList[8].isChecked){
+      anotherController.text=hospitalManager.hospitalList[8].name!;
+      anotherController.addListener(() {
+        // if(anotherController.text!=null)
+        hospitalManager.setHospitalName(9, anotherController.text);
+      });
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    anotherController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    isAnother=hospitalManager.hospitalList[8].isChecked;
+    if(hospitalManager.hospitalList[8].isChecked)
+    anotherController.text=hospitalManager.hospitalList[8].name!;
+
     return Container(
       height: 175,
       width: double.infinity,
@@ -77,8 +101,7 @@ class _AssociatedCardState extends State<AssociatedCard> {
           )),
           isAnother
               ? TextInput(
-                  controller:
-                      widget.editingController ?? TextEditingController(),
+                  controller: anotherController,
                   hint: "associated-hospitals".tr(),
                   textInputAction: TextInputAction.done,
                 )

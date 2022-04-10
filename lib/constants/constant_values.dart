@@ -6,6 +6,7 @@ import '../data/models/questionnaire.dart';
 
 class ConstantValues{
   static double padding=20.0;
+  static double radius=20.0;
 
   static List<Questionnaire>  questionnaireList=[
     Questionnaire(id:1,question: "q-1".tr(),isLocale: true, questionnaireType: QuestionnaireType.field, hint: "chronic-diseases".tr()),

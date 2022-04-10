@@ -38,7 +38,6 @@ class _DropdownInputState extends State<DropdownInput> {
   void initState() {
     selectedValue=widget.selectedValue;
     for(var item in Provider.of<HospitalManager>(context,listen: false).hospitalList) {
-      print(item.isChecked);
       this.selected.add(item.isChecked);
     }
     super.initState();
@@ -173,8 +172,8 @@ class _SelectRowState extends State<_SelectRow> {
               widget.onChange(x!);
             }),
         SizedBox(
-            width: 200,
-            child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.text))),
+            width: 230,
+            child: FittedBox(fit: BoxFit.scaleDown,alignment: AlignmentDirectional.centerStart, child: Text(widget.text,style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),))),
       ],
     );
   }

@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you_flutter/constants/constant_images.dart';
 import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
+import 'package:for_you_flutter/shared/components.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -29,29 +30,29 @@ Location x=Location();
 
   late CameraPosition initialCameraPosition;
 
-  Future<void> checkPermission() async {
-    Location location = new Location();
-
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-    location.getLocation().then((value) {});
-  }
+  // Future<void> checkPermission() async {
+  //   Location location = new Location();
+  //
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+  //
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+  //   location.getLocation().then((value) {});
+  // }
 
   _handleTap(LatLng point) {
     setState(() {
@@ -68,7 +69,6 @@ Location x=Location();
 
   @override
   void initState() {
-    checkPermission();
     _controller = Completer();
     initialCameraPosition = CameraPosition(
       target: widget.initialPosition,

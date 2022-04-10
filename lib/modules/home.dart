@@ -224,7 +224,7 @@ class Home extends StatelessWidget {
                     if(dialogContext!=null){
                       Navigator.pop(dialogContext!);
                       value.forEach((element) {
-                        hospitalManager.checkHospital(element.id,element.location);
+                        hospitalManager.checkHospital(element.id,element.location,element.name);
                       });
                       hospitalManager.isCloud = true;
                       Navigator.push(
