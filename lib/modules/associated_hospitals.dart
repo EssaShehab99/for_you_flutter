@@ -11,7 +11,6 @@ import 'package:for_you_flutter/data/network/account_dao.dart';
 import 'package:for_you_flutter/data/providers/checkup_manager.dart';
 import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
 import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
-import 'package:for_you_flutter/shared/associated_card.dart';
 import 'package:for_you_flutter/shared/map_card.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_platform_interface/location_platform_interface.dart';
@@ -20,6 +19,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../constants/constant_values.dart';
 import '../data/providers/user_manager.dart';
 import '../shared/components.dart';
+import '../shared/dropdown_input.dart';
+import '../shared/text_input.dart';
 import '../styles/colors_app.dart';
 import 'home.dart';
 
@@ -160,7 +161,7 @@ class AssociatedHospitals extends StatelessWidget {
                   child: SizedBox(
                 height: 50,
               )),
-              Flexible(child: AssociatedCard()),
+              Flexible(child: _AssociatedCard()),
               if (value.hospitalList[8].isChecked)
                 Flexible(
                     child: Container(
@@ -258,6 +259,103 @@ class AssociatedHospitals extends StatelessWidget {
             ]),
           );
         }),
+      ),
+    );
+  }
+}
+
+class _AssociatedCard extends StatefulWidget {
+  const _AssociatedCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<_AssociatedCard> createState() => _AssociatedCardState();
+}
+
+class _AssociatedCardState extends State<_AssociatedCard> {
+  bool isAnother = false;
+  late TextEditingController anotherController;
+  late HospitalManager hospitalManager;
+
+  @override
+  void initState() {
+    hospitalManager = Provider.of<HospitalManager>(context, listen: false);
+    anotherController = TextEditingController();
+    if(hospitalManager.hospitalList[8].isChecked){
+      anotherController.text=hospitalManager.hospitalList[8].name!;
+      anotherController.addListener(() {
+        // if(anotherController.text!=null)
+        hospitalManager.setHospitalName(9, anotherController.text);
+      });
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    anotherController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    isAnother=hospitalManager.hospitalList[8].isChecked;
+    if(hospitalManager.hospitalList[8].isChecked)
+      anotherController.text=hospitalManager.hospitalList[8].name!;
+
+    return Container(
+      height: 175,
+      width: double.infinity,
+      padding: EdgeInsets.all(ConstantValues.padding),
+      margin: EdgeInsets.only(top: ConstantValues.padding),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: ColorsApp.white,
+          boxShadow: [
+            BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
+          ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+              child: DropdownInput(
+                width: 200,
+                isCheckBox: true,
+                onCheckBox: (List<bool> list) {
+                  for (int i = 0; i < list.length; i++) {
+                    if (list[i] == true) {
+                      Provider.of<HospitalManager>(context, listen: false)
+                          .setCheck(i, true);
+                    } else {
+                      Provider.of<HospitalManager>(context, listen: false)
+                          .setCheck(i, false);
+                    }
+                  }
+                  setState(() {
+                    if (list[8] == true)
+                      isAnother = true;
+                    else
+                      isAnother = false;
+                  });
+                },
+                hint: "associated-hospitals".tr(),
+                items: List<String>.generate(
+                    Provider.of<HospitalManager>(context, listen: false)
+                        .hospitalList
+                        .length,
+                        (index) => Provider.of<HospitalManager>(context, listen: false)
+                        .hospitalList[index]
+                        .name!),
+              )),
+          isAnother
+              ? TextInput(
+            controller: anotherController,
+            hint: "associated-hospitals".tr(),
+            textInputAction: TextInputAction.done,
+          )
+              : SizedBox.shrink()
+        ],
       ),
     );
   }

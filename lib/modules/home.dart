@@ -9,7 +9,6 @@ import 'package:for_you_flutter/modules/associated_hospitals.dart';
 import 'package:for_you_flutter/modules/questionnaires_screen.dart';
 import 'package:for_you_flutter/modules/sign_in.dart';
 import 'package:for_you_flutter/modules/sign_up.dart';
-import 'package:for_you_flutter/shared/questionnaire_card.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +21,6 @@ import '../data/providers/checkup_manager.dart';
 import '../data/providers/hospitals_manager.dart';
 import '../data/providers/questionnaires_manager.dart';
 import '../data/setting/config.dart';
-import '../shared/checkup_card.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
 import 'checkups_screen.dart';
