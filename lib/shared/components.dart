@@ -39,9 +39,12 @@ class Components {
             highlightColor: ColorsApp.white.withOpacity(0.0),
             overlayColor:
                 MaterialStateProperty.all(Colors.white.withOpacity(0.0)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children ?? [],
+            child: Padding(
+              padding:  EdgeInsets.all(ConstantValues.padding*0.5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: children ?? [],
+              ),
             )),
       );
 
@@ -124,7 +127,7 @@ class Components {
         ),
       );
 
-  static Future<void> showErrorDialog(
+  static Future<void> showCustomDialog(
       {required BuildContext context,
       required List<Widget> children,
       bool? barrierDismissible}) async {

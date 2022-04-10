@@ -79,12 +79,14 @@ class AccountDAO extends ChangeNotifier {
 
   Future<bool> setCheckup(List<Checkup> checkupList) async {
     bool status = false;
-
+checkupList.forEach((element) {
+  print(element.toJson());
+});
     try {
       for (Checkup checkup in checkupList) {
-        for (String element in checkup.checkupAttach) {
-          checkup.checkupAttach[checkup.checkupAttach.indexOf(element)] =
-              await uploadFile(File(element), userManager!.getUser!.phone);
+        for (FileAndDate element in checkup.checkupAttach) {
+          checkup.checkupAttach[checkup.checkupAttach.indexOf(element)].file =
+              await uploadFile(File(element.file), userManager!.getUser!.phone);
         }
         await documentReference
             .collection("checkup")
@@ -94,18 +96,6 @@ class AccountDAO extends ChangeNotifier {
           status = true;
         });
       }
-      /*     checkupList.forEach((checkup) async {
-        checkup.checkupAttach.forEach((element) async {
-          checkup.checkupAttach[checkup.checkupAttach.indexOf(element)] =
-              await uploadFile(File(element), userManager!.getUser!.phone);
-        });
-        await documentReference
-            .collection("checkup")
-            .doc(checkup.id.toString())
-            .set(checkup.toJson()).then((value) {
-          status=true;
-        });
-      });*/
     } catch (e) {}
 
     return status;
@@ -126,17 +116,6 @@ class AccountDAO extends ChangeNotifier {
           });
         }
       }
-
-      /*  await  hospitalList.forEach((hospital) async {
-        if (hospital.isChecked) {
-          await documentReference
-              .collection("hospitals")
-              .doc(hospital.id.toString())
-              .set(hospital.toJson()).then((value) {
-            status=true;
-          });
-        }
-      });*/
     } catch (e) {}
 
     return status;
@@ -205,10 +184,10 @@ class AccountDAO extends ChangeNotifier {
     bool status = false;
     try {
       for (Checkup checkup in checkupList) {
-        for (String element in checkup.checkupAttach) {
-          if (await File(element).exists())
-            checkup.checkupAttach[checkup.checkupAttach.indexOf(element)] =
-                await uploadFile(File(element), userManager!.getUser!.phone);
+        for (FileAndDate element in checkup.checkupAttach) {
+          if (await File(element.file).exists())
+            checkup.checkupAttach[checkup.checkupAttach.indexOf(element)].file =
+                await uploadFile(File(element.file), userManager!.getUser!.phone);
         }
         await documentReference
             .collection("checkup")

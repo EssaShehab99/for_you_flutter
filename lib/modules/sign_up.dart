@@ -32,14 +32,13 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLoading = false;
-     int? blood;
-     int? socialStatus;
+    int? blood;
+    int? socialStatus;
     int? gender;
     bool isEdit = false;
     User? user = Provider.of<UserManager>(context).getUser;
     if (user != null) {
       isEdit = true;
-
       nameController.text = user.name;
       phoneController.text = user.phone;
       ageController.text = user.age.toString();
@@ -91,9 +90,10 @@ class SignUp extends StatelessWidget {
                 DropdownInput(
                     items: ConstantValues.gender,
                     hint: "gender".tr(),
-                    selectedValue: gender==null?null:ConstantValues.gender[gender],
+                    selectedValue:
+                        gender == null ? null : ConstantValues.gender[gender],
                     onChanged: (value) {
-                      gender=ConstantValues.gender.indexOf(value);
+                      gender = ConstantValues.gender.indexOf(value);
                     }),
                 TextInput(
                     validator: (value) {
@@ -118,16 +118,20 @@ class SignUp extends StatelessWidget {
                 DropdownInput(
                     items: ConstantValues.bloodType,
                     hint: "blood-type".tr(),
-                    selectedValue: blood==null?null:ConstantValues.bloodType[blood],
+                    selectedValue:
+                        blood == null ? null : ConstantValues.bloodType[blood],
                     onChanged: (value) {
                       blood = ConstantValues.bloodType.indexOf(value);
                     }),
                 DropdownInput(
                     items: ConstantValues.socialStatusList,
                     hint: "social-status".tr(),
-                    selectedValue: socialStatus==null?null:ConstantValues.socialStatusList[socialStatus],
+                    selectedValue: socialStatus == null
+                        ? null
+                        : ConstantValues.socialStatusList[socialStatus],
                     onChanged: (value) {
-                      socialStatus = ConstantValues.socialStatusList.indexOf(value);
+                      socialStatus =
+                          ConstantValues.socialStatusList.indexOf(value);
                     }),
                 TextInput(
                     validator: (value) {
@@ -152,67 +156,29 @@ class SignUp extends StatelessWidget {
                     hint: "confirm".tr(),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true),
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    return Components.MainButton(
-                        children: [
-                          isLoading
-                              ? CircularProgressIndicator(
-                            color: ColorsApp.white,
-                          )
-                              : Text(
-                            isEdit ? "edit".tr() : "next".tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(color: ColorsApp.white),
-                          )
-                        ],
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            setState((){
-                              isLoading=true;
-                            });
-                            if (!isEdit) {
-                              Provider.of<UserManager>(context, listen: false)
-                                  .setUser(User(
-                                      name: nameController.text,
-                                      phone: phoneController.text,
-                                      age: int.parse(ageController.text),
-                                      height: double.parse(heightController.text),
-                                      weight: double.parse(weightController.text),
-                                      blood: blood!,
-                                      gender: gender!,
-                                      socialStatus: socialStatus!,
-                                      password: passwordController.text));
-                              // Provider.of<SignUpDAO>(context, listen: false).user =
-                              //     Provider.of<UserManager>(context, listen: false)
-                              //         .getUser;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VerifyPhone(),
-                                  ));
-                            } else {
-                              Provider.of<SignUpDAO>(context, listen: false)
-                                  .updateUser(User(
-                                      name: nameController.text,
-                                      phone: phoneController.text,
-                                      age: int.parse(ageController.text),
-                                      height: double.parse(heightController.text),
-                                      weight: double.parse(weightController.text),
-                                      blood: blood!,
-                                      gender: gender!,
-                                      socialStatus: socialStatus!,
-                                      password: passwordController.text)).whenComplete((){
-                                setState((){
-                                  isLoading=false;
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green,
-                                    content:  Text("success-edit".tr(),style: Theme.of(context).textTheme.bodyText1?.copyWith(color: CupertinoColors.white),),
-                                  ));
-                                });
-                                Provider.of<UserManager>(context, listen: false)
-                                    .setUser(User(
+                StatefulBuilder(builder: (context, setState) {
+                  return Components.MainButton(
+                      children: [
+                        isLoading
+                            ? CircularProgressIndicator(
+                                color: ColorsApp.white,
+                              )
+                            : Text(
+                                isEdit ? "edit".tr() : "next".tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(color: ColorsApp.white),
+                              )
+                      ],
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (!isEdit) {
+                            Provider.of<UserManager>(context, listen: false)
+                                .setUser(User(
                                     name: nameController.text,
                                     phone: phoneController.text,
                                     age: int.parse(ageController.text),
@@ -222,12 +188,60 @@ class SignUp extends StatelessWidget {
                                     gender: gender!,
                                     socialStatus: socialStatus!,
                                     password: passwordController.text));
+                            // Provider.of<SignUpDAO>(context, listen: false).user =
+                            //     Provider.of<UserManager>(context, listen: false)
+                            //         .getUser;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VerifyPhone(),
+                                ));
+                          } else {
+                            Provider.of<SignUpDAO>(context, listen: false)
+                                .updateUser(User(
+                                    name: nameController.text,
+                                    phone: phoneController.text,
+                                    age: int.parse(ageController.text),
+                                    height: double.parse(heightController.text),
+                                    weight: double.parse(weightController.text),
+                                    blood: blood!,
+                                    gender: gender!,
+                                    socialStatus: socialStatus!,
+                                    password: passwordController.text))
+                                .whenComplete(() {
+                              setState(() {
+                                isLoading = false;
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text(
+                                    "success-edit".tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(
+                                            color: CupertinoColors.white),
+                                  ),
+                                ));
                               });
-                            }
+                              Provider.of<UserManager>(context, listen: false)
+                                  .setUser(User(
+                                      name: nameController.text,
+                                      phone: phoneController.text,
+                                      age: int.parse(ageController.text),
+                                      height:
+                                          double.parse(heightController.text),
+                                      weight:
+                                          double.parse(weightController.text),
+                                      blood: blood!,
+                                      gender: gender!,
+                                      socialStatus: socialStatus!,
+                                      password: passwordController.text));
+                            });
                           }
-                        });
-                  }
-                ),
+                        }
+                      });
+                }),
                 SizedBox(
                   height: 10,
                 ),

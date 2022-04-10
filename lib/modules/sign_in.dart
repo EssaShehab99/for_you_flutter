@@ -66,7 +66,7 @@ class SignIn extends StatelessWidget {
   }
 
   showErrorDialog(BuildContext context) =>
-      Components.showErrorDialog(context: context, children: [
+      Components.showCustomDialog(context: context, children: [
         Center(
             child: Icon(
           Icons.info_outline,

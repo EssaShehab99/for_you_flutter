@@ -25,7 +25,108 @@ class CheckupCard extends StatefulWidget {
 }
 
 class _CheckupCardState extends State<CheckupCard> {
+  File? file;
+  DateTime? selectedDate;
 
+  Future<bool> showSelectDialog(
+      {Function? selectFile, required bool oneButton,String? text}) async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: StatefulBuilder(
+                builder: (context, setStateChild) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Components.MainButton(
+                        onTap: () async {
+                          if (selectFile != null) await selectFile();
+                          setStateChild(() {});
+                        },
+                        children: [
+                          Icon(
+                            Icons.file_copy,
+                            color: ColorsApp.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Flexible(
+                            child: Text(
+                              text??(file == null
+                                  ? "select-file".tr()
+                                  : "${file!.path.split("/").last}"),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: ColorsApp.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ]),
+                    Components.MainButton(
+                        onTap: () async {
+                          final DateTime? selected = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2010),
+                            lastDate: DateTime(2025),
+                          );
+                          if (selected != null)
+                            setStateChild(() {
+                              selectedDate = selected;
+                            });
+                        },
+                        children: [
+                          Icon(
+                            Icons.date_range,
+                            color: ColorsApp.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            selectedDate?.year == null
+                                ? "select-date".tr()
+                                : "${selectedDate?.year}/${selectedDate?.month}/${selectedDate?.day}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(color: ColorsApp.white),
+                          ),
+                        ]),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        if (!oneButton)
+                          TextButton(
+                            child: Text(
+                              "yes".tr(),
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            onPressed: () {
+                              if (file != null && selectedDate != null)
+                                Navigator.pop(context, true);
+                            },
+                          ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          },
+                          child: Text(
+                            oneButton ? "cancel".tr() : "no".tr(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +159,40 @@ class _CheckupCardState extends State<CheckupCard> {
                     padding:
                         EdgeInsetsDirectional.only(end: ConstantValues.padding),
                     child: InkWell(
-                        onTap: () {
-                          Components.selectFile(allowedExtensions: ["pdf"])
+                        onTap: () async {
+                          showSelectDialog(
+                                  selectFile: () async {
+                                    await Components.selectFile(
+                                            allowedExtensions: ["pdf"])
+                                        .then((value) {
+                                      if (value != null) {
+                                        file = value;
+                                      } else {}
+                                    });
+                                  },
+                                  oneButton: false)
                               .then((value) {
-                            setState(() {
-                              if (value != null) {
+                            if (value) {
+                              if (file != null && selectedDate != null) {
                                 if (widget.checkup.checkupAttach.length ==
                                     widget.checkup.numberAttach)
                                   widget.checkup.checkupAttach.removeAt(
                                       widget.checkup.numberAttach - 1);
                                 if (widget.checkup.checkupAttach
-                                    .contains(value.path)) return;
-                                widget.checkup.checkupAttach
-                                    .insert(0, value.path);
+                                    .contains(file!.path)) return;
+                                widget.checkup.checkupAttach.insert(
+                                    0,
+                                    FileAndDate(
+                                        file: file!.path,
+                                        dateTime: selectedDate!));
                                 Provider.of<CheckupManager>(context,
                                         listen: false)
                                     .updateItem(widget.checkup);
-                              } else {}
-                            });
+                                setState(() {});
+                              }
+                            }
+                            file = null;
+                            selectedDate = null;
                           });
                         },
                         child: CircleAvatar(
@@ -84,11 +201,23 @@ class _CheckupCardState extends State<CheckupCard> {
                         )),
                   )),
 
-              for (String item in widget.checkup.checkupAttach)
+              for (FileAndDate item in widget.checkup.checkupAttach)
                 Flexible(
                     child: TextButton(
                         onPressed: () async {
-                          await File(item).exists()? await OpenFile.open(item):Components.launchUrl(item);
+                          selectedDate=item.dateTime;
+                          showSelectDialog(
+                            text: "open".tr(),
+                              selectFile: () async {
+                                await File(item.file).exists()
+                                    ? await OpenFile.open(item.file)
+                                    : Components.launchUrl(item.file);
+                              },
+                              oneButton: true).whenComplete((){
+                            file = null;
+                            selectedDate = null;
+
+                          });
                         },
                         child: Text(
                           "${widget.checkup.checkupAttach.indexOf(item) + 1}",

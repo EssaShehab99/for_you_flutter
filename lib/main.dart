@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: Description()),
+            home: SafeArea(child: Home()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

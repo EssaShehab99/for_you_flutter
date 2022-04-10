@@ -25,6 +25,7 @@ class MapCard extends StatefulWidget {
 class _MapCardState extends State<MapCard> {
   List<Marker> markers = [];
   late Completer<GoogleMapController> _controller;
+Location x=Location();
 
   late CameraPosition initialCameraPosition;
 

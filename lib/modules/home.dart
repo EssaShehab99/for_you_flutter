@@ -60,7 +60,7 @@ class Home extends StatelessWidget {
           Flexible(
               child: buildColumn(
                   onTapOne: () {
-                    Components.showErrorDialog(context: context, children: [
+                    Components.showCustomDialog(context: context, children: [
                       Text(
                         "beneficiaries-message".tr(),
                         style: Theme.of(context).textTheme.headline1,
@@ -74,7 +74,9 @@ class Home extends StatelessWidget {
                               .bodyText1
                               ?.copyWith(color: ColorsApp.white),
                         )
-                      ])
+                      ],onTap: (){
+                        Navigator.pop(context);
+                      })
                     ]);
                   },
                   onTapTow: () {
