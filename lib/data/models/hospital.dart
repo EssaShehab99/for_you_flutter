@@ -20,7 +20,7 @@ class Hospital {
       id: ConstantValues.hospitalsList.firstWhere((element) => element.id==int.parse(id)).id,
       location: geoPoint != null
           ? LatLng(geoPoint.latitude, geoPoint.longitude)
-          : null,
+          : ConstantValues.hospitalsList.firstWhere((element) => element.id==int.parse(id)).location,
       isChecked: true,
       name: json["name"]??ConstantValues.hospitalsList.firstWhere((element) => element.id==int.parse(id)).name
     );
@@ -30,7 +30,7 @@ class Hospital {
     return <String, dynamic>{
       "location": location != null
           ? GeoPoint(location!.latitude, location!.longitude)
-          : null,
+          : ConstantValues.hospitalsList.firstWhere((element) => element.id==id).location,
       "name": id==9?name:null
     };
   }

@@ -66,16 +66,18 @@ class _CheckupCardState extends State<CheckupCard> {
                         ]),
                     Components.MainButton(
                         onTap: () async {
-                          final DateTime? selected = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2010),
-                            lastDate: DateTime(2025),
-                          );
-                          if (selected != null)
-                            setStateChild(() {
-                              selectedDate = selected;
-                            });
+                        if(text==null)  {
+                            final DateTime? selected = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2010),
+                              lastDate: DateTime(2025),
+                            );
+                            if (selected != null)
+                              setStateChild(() {
+                                selectedDate = selected;
+                              });
+                          }
                         },
                         children: [
                           Icon(

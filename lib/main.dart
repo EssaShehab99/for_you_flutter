@@ -56,12 +56,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (context) =>
                 CheckupManager()..setItems(ConstantValues.checkupList)),
-        ChangeNotifierProvider(
-            create: (context) =>
-                SignInDAO()),
-        ChangeNotifierProvider(
-            create: (context) => UserManager()
-              ..setUser(User(
+        ChangeNotifierProvider(create: (context) => SignInDAO()),
+        ChangeNotifierProvider(create: (context) => UserManager()
+            /* ..setUser(User(
                   name: "براء",
                   phone: "+967777339975",
                   age: 20,
@@ -70,10 +67,14 @@ class MyApp extends StatelessWidget {
                   weight: 56,
                   blood: 1,
                   socialStatus: 1,
-                  password: 'a'))),
-        ChangeNotifierProxyProvider<UserManager,SignUpDAO>(
-            create: (context) => SignUpDAO(user: Provider.of<UserManager>(context, listen: false).getUser),
-        update: (context, userManager, _) =>SignUpDAO(user: userManager.getUser),
+                  password: 'a')
+              )*/
+            ),
+        ChangeNotifierProxyProvider<UserManager, SignUpDAO>(
+          create: (context) => SignUpDAO(
+              user: Provider.of<UserManager>(context, listen: false).getUser),
+          update: (context, userManager, _) =>
+              SignUpDAO(user: userManager.getUser),
         ),
         ChangeNotifierProvider(
             create: (context) => QuestionnairesManager()
@@ -89,7 +90,7 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           Config.getLocal(context);
           return MaterialApp(
-            home: SafeArea(child: Home()),
+            home: SafeArea(child: Description()),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

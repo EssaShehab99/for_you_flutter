@@ -86,5 +86,6 @@
   "select-date": "Select Date",
   "select-file": "Select File",
   "open": "Open",
-  "km": "KM"
+  "km": "KM",
+  "exist-phone": "Exist Phone Number"
 }

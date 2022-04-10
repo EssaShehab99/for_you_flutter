@@ -98,12 +98,11 @@ class CheckupsScreen extends StatelessWidget {
                       });
                     }
                   } else
-                    Provider.of<AccountDAO>(context,listen: false).setCheckup(checkupManager.checkupList);
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => AssociatedHospitals(),
-                    //     ));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AssociatedHospitals(),
+                        ));
                 }),
           ),
           if (!isEdit)

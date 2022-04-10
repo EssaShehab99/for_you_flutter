@@ -12,9 +12,11 @@ import 'package:for_you_flutter/modules/verify_phone.dart';
 import 'package:for_you_flutter/shared/dropdown_input.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:provider/provider.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 import '../constants/constant_images.dart';
 import '../constants/constant_values.dart';
+import '../data/network/sign_in_dao.dart';
 import '../shared/components.dart';
 import '../shared/locale_switch.dart';
 import '../shared/text_input.dart';
@@ -48,6 +50,8 @@ class SignUp extends StatelessWidget {
       blood = user.blood;
       socialStatus = user.socialStatus;
     }
+    bool? isExist = true;
+
     return SafeArea(
       child: Scaffold(
         body: Components.bodyScreens([
@@ -156,92 +160,118 @@ class SignUp extends StatelessWidget {
                     hint: "confirm".tr(),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true),
-                StatefulBuilder(builder: (context, setState) {
-                  return Components.MainButton(
-                      children: [
-                        isLoading
-                            ? CircularProgressIndicator(
-                                color: ColorsApp.white,
-                              )
-                            : Text(
-                                isEdit ? "edit".tr() : "next".tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(color: ColorsApp.white),
-                              )
-                      ],
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          if (!isEdit) {
-                            Provider.of<UserManager>(context, listen: false)
-                                .setUser(User(
-                                    name: nameController.text,
-                                    phone: phoneController.text,
-                                    age: int.parse(ageController.text),
-                                    height: double.parse(heightController.text),
-                                    weight: double.parse(weightController.text),
-                                    blood: blood!,
-                                    gender: gender!,
-                                    socialStatus: socialStatus!,
-                                    password: passwordController.text));
-                            // Provider.of<SignUpDAO>(context, listen: false).user =
-                            //     Provider.of<UserManager>(context, listen: false)
-                            //         .getUser;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VerifyPhone(),
-                                ));
-                          } else {
-                            Provider.of<SignUpDAO>(context, listen: false)
-                                .updateUser(User(
-                                    name: nameController.text,
-                                    phone: phoneController.text,
-                                    age: int.parse(ageController.text),
-                                    height: double.parse(heightController.text),
-                                    weight: double.parse(weightController.text),
-                                    blood: blood!,
-                                    gender: gender!,
-                                    socialStatus: socialStatus!,
-                                    password: passwordController.text))
-                                .whenComplete(() {
-                              setState(() {
-                                isLoading = false;
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: Colors.green,
-                                  content: Text(
-                                    "success-edit".tr(),
+                StatefulBuilder(builder: (context, setState) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isExist != null && !(isExist!))
+                      Flexible(
+                      child: Text(
+                        "exist-phone".tr(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1
+                            ?.copyWith(color: Colors.red, fontSize: 15),
+                      ),
+                    ),
+                    Components.MainButton(
+                          children: [
+                            isLoading
+                                ? CircularProgressIndicator(
+                                    color: ColorsApp.white,
+                                  )
+                                : Text(
+                                    isEdit ? "edit".tr() : "next".tr(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
-                                        ?.copyWith(
-                                            color: CupertinoColors.white),
-                                  ),
-                                ));
+                                        ?.copyWith(color: ColorsApp.white),
+                                  )
+                          ],
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                isLoading = true;
                               });
-                              Provider.of<UserManager>(context, listen: false)
-                                  .setUser(User(
-                                      name: nameController.text,
-                                      phone: phoneController.text,
-                                      age: int.parse(ageController.text),
-                                      height:
-                                          double.parse(heightController.text),
-                                      weight:
-                                          double.parse(weightController.text),
-                                      blood: blood!,
-                                      gender: gender!,
-                                      socialStatus: socialStatus!,
-                                      password: passwordController.text));
-                            });
-                          }
-                        }
-                      });
-                }),
+                              if (!isEdit) {
+                                Provider.of<SignInDAO>(context, listen: false)
+                                    .checkPhone(
+                                    phoneController.text)
+                                    .then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      isExist = false;
+                                      isLoading = false;
+                                    });
+
+                                  } else {
+                                    Provider.of<UserManager>(context, listen: false)
+                                        .setUser(User(
+                                        name: nameController.text,
+                                        phone: phoneController.text,
+                                        age: int.parse(ageController.text),
+                                        height:
+                                        double.parse(heightController.text),
+                                        weight:
+                                        double.parse(weightController.text),
+                                        blood: blood!,
+                                        gender: gender!,
+                                        socialStatus: socialStatus!,
+                                        password: passwordController.text));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => VerifyPhone(),
+                                        ));
+                                  }
+                                });
+                              } else {
+                                Provider.of<SignUpDAO>(context, listen: false)
+                                    .updateUser(User(
+                                        name: nameController.text,
+                                        phone: phoneController.text,
+                                        age: int.parse(ageController.text),
+                                        height: double.parse(heightController.text),
+                                        weight: double.parse(weightController.text),
+                                        blood: blood!,
+                                        gender: gender!,
+                                        socialStatus: socialStatus!,
+                                        password: passwordController.text))
+                                    .whenComplete(() {
+                                  setState(() {
+                                    isLoading = false;
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text(
+                                        "success-edit".tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(
+                                                color: CupertinoColors.white),
+                                      ),
+                                    ));
+                                  });
+                                  Provider.of<UserManager>(context, listen: false)
+                                      .setUser(User(
+                                          name: nameController.text,
+                                          phone: phoneController.text,
+                                          age: int.parse(ageController.text),
+                                          height:
+                                              double.parse(heightController.text),
+                                          weight:
+                                              double.parse(weightController.text),
+                                          blood: blood!,
+                                          gender: gender!,
+                                          socialStatus: socialStatus!,
+                                          password: passwordController.text));
+                                });
+                              }
+                            }
+                          }),
+                  ],
+                )),
                 SizedBox(
                   height: 10,
                 ),

@@ -21,5 +21,15 @@ class SignInDAO extends ChangeNotifier {
     } catch (e) {}
     return user;
   }
+  Future<UserModel.User?> checkPhone(String phone) async {
+    UserModel.User? user;
+    try {
+      await collection.doc(phone).get().then((value) {
+          user = UserModel.User.fromJson(value.data() as Map<String, dynamic>);
+
+      });
+    } catch (e) {}
+    return user;
+  }
 
 }

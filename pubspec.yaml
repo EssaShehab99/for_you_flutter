@@ -46,7 +46,7 @@ dependencies:
   firebase_storage: ^10.2.11
   url_launcher: ^6.0.20
   sliding_up_panel: ^2.0.0+1
-  flutter_polyline_points: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:
