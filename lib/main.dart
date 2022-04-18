@@ -59,9 +59,9 @@ final bool Initial;
                 CheckupManager()..setItems(ConstantValues.checkupList)),
         ChangeNotifierProvider(create: (context) => SignInDAO()),
         ChangeNotifierProvider(create: (context) => UserManager()
-            /* ..setUser(User(
+             /*..setUser(User(
                   name: "براء",
-                  phone: "+967777339975",
+                  phone: "+967773380265",
                   age: 20,
                   gender: 1,
                   height: 1.8,

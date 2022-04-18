@@ -59,7 +59,6 @@ class AssociatedHospitals extends StatelessWidget {
     bool isLoading = false;
     if (hospitalManager.isCloud) {
       isEdit = true;
-      hospitalManager.hospitalList.forEach((element) {});
     }
     UserManager userManager=Provider.of<UserManager>(context,listen: false);
     return SafeArea(
@@ -285,7 +284,6 @@ class _AssociatedCardState extends State<_AssociatedCard> {
     if(hospitalManager.hospitalList[8].isChecked){
       anotherController.text=hospitalManager.hospitalList[8].name!;
       anotherController.addListener(() {
-        // if(anotherController.text!=null)
         hospitalManager.setHospitalName(9, anotherController.text);
       });
     }
@@ -303,7 +301,11 @@ class _AssociatedCardState extends State<_AssociatedCard> {
     isAnother=hospitalManager.hospitalList[8].isChecked;
     if(hospitalManager.hospitalList[8].isChecked)
       anotherController.text=hospitalManager.hospitalList[8].name!;
-
+    if(hospitalManager.hospitalList[8].isChecked){
+      anotherController.addListener(() {
+        hospitalManager.setHospitalName(9, anotherController.text);
+      });
+    }
     return Container(
       height: 175,
       width: double.infinity,

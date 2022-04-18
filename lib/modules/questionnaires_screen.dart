@@ -168,6 +168,8 @@ class _QuestionnaireCardState extends State<_QuestionnaireCard> {
           ? SingingCharacter.yes
           : SingingCharacter.no;
     }
+    if(widget.questionnaire.questionnaireType==QuestionnaireType.field&& widget.questionnaire.answerAttach!=null)
+      textEditingController.text=widget.questionnaire.answerAttach!;
     super.initState();
   }
 

@@ -70,7 +70,10 @@ class Components {
           child: Column(
             children: [
               icon != null
-                  ? Expanded(child: SvgPicture.asset(icon))
+                  ? Expanded(flex: 2,child: Padding(
+                    padding:  EdgeInsets.all(ConstantValues.padding*0.5),
+                    child: SvgPicture.asset(icon),
+                  ))
                   : SizedBox.shrink(),
               Expanded(
                   child: Center(

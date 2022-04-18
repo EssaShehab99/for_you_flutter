@@ -159,6 +159,7 @@ class SignIn extends StatelessWidget {
                               encrypt.Encrypted encrypted = encrypter.encrypt(
                                   passwordController.text,
                                   iv: User.iv);
+                              print(encrypted.base64);
                               Provider.of<SignInDAO>(context, listen: false)
                                   .signIn(
                                       phoneController.text, encrypted.base64)
