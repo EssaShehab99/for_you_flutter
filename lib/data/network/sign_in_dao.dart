@@ -26,7 +26,6 @@ class SignInDAO extends ChangeNotifier {
     try {
       await collection.doc(phone).get().then((value) {
           user = UserModel.User.fromJson(value.data() as Map<String, dynamic>);
-
       });
     } catch (e) {}
     return user;

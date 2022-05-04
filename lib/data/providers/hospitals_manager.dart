@@ -12,7 +12,6 @@ class HospitalManager extends ChangeNotifier{
   List<Hospital> get hospitalList => _hospitalList;
 
   void checkHospital(int id,LatLng? latLng,String? name){
-
     _hospitalList[this._hospitalList.indexWhere((element) => id==element.id)].isChecked=true;
     _hospitalList[this._hospitalList.indexWhere((element) => id==element.id)].location=latLng;
     name==null?null: _hospitalList[this._hospitalList.indexWhere((element) => id==element.id)].name=name;

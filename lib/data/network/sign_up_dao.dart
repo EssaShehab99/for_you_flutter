@@ -11,10 +11,7 @@ class SignUpDAO extends ChangeNotifier {
       FirebaseFirestore.instance.collection('user');
 
   UserModel.User? user;
-  String? phoneNo;
-  String? activeCode;
   String? verificationId;
-  String? uid;
 
   Future<void> signUp() async {
     if (user != null) return collection.doc(user!.phone).set(user!.toJson());
