@@ -180,3 +180,5 @@ class Components {
     });
   }
 }
+
+enum OperationType{Add,Edit}

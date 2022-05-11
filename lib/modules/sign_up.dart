@@ -22,7 +22,7 @@ import '../shared/locale_switch.dart';
 import '../shared/text_input.dart';
 
 class SignUp extends StatelessWidget {
-  SignUp({Key? key}) : super(key: key);
+  SignUp({Key? key,required this.operationType}) : super(key: key);
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
@@ -30,6 +30,7 @@ class SignUp extends StatelessWidget {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final OperationType operationType;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,8 @@ class SignUp extends StatelessWidget {
     int? blood;
     int? socialStatus;
     int? gender;
-    bool isEdit = false;
     User? user = Provider.of<UserManager>(context).getUser;
     if (user != null) {
-      isEdit = true;
       nameController.text = user.name;
       phoneController.text = user.phone;
       ageController.text = user.age.toString();
@@ -71,7 +70,7 @@ class SignUp extends StatelessWidget {
                     controller: nameController,
                     hint: "name".tr()),
                 TextInput(
-                    enabled: !isEdit,
+                    enabled: operationType==OperationType.Add,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'validate-value'.tr();
@@ -188,7 +187,7 @@ class SignUp extends StatelessWidget {
                                           color: ColorsApp.white,
                                         )
                                       : Text(
-                                          isEdit ? "edit".tr() : "next".tr(),
+                                    operationType==OperationType.Edit ? "edit".tr() : "next".tr(),
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1
@@ -201,7 +200,7 @@ class SignUp extends StatelessWidget {
                                     setState(() {
                                       isLoading = true;
                                     });
-                                    if (!isEdit) {
+                                    if (operationType==OperationType.Add) {
                                       Provider.of<SignInDAO>(context,
                                               listen: false)
                                           .checkPhone(phoneController.text)
@@ -295,7 +294,7 @@ class SignUp extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                if (!isEdit)
+                if (operationType==OperationType.Add)
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
