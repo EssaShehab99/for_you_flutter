@@ -227,12 +227,19 @@ class SignUp extends StatelessWidget {
                                                   socialStatus: socialStatus!,
                                                   password:
                                                       passwordController.text));
+                                          Provider.of<SignUpDAO>(context, listen: false).signUp();
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    VerifyPhone(),
+                                                    QuestionnairesScreen(),
                                               ));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           VerifyPhone(),
+                                          //     ));
                                         }
                                       });
                                     } else {
