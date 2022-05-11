@@ -27,7 +27,7 @@
     </queries>
 
     <application
-        android:label="for_you_flutter"
+        android:label="صحتك دونها"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <provider
