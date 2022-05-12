@@ -22,6 +22,7 @@ import '../data/providers/hospitals_manager.dart';
 import '../data/providers/questionnaires_manager.dart';
 import '../data/setting/config.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/locale_switch.dart';
 import 'checkups_screen.dart';
 
@@ -65,17 +66,19 @@ class Home extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline1,
                         textAlign: TextAlign.justify,
                       ),
-                      Components.MainButton(children: [
-                        Text(
-                          "ok".tr(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(color: ColorsApp.white),
-                        )
-                      ],onTap: (){
-                        Navigator.pop(context);
-                      })
+                      CustomButton(
+                          children: [
+                            Text(
+                              "ok".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: ColorsApp.white),
+                            )
+                          ],
+                          onTap: () {
+                            Navigator.pop(context);
+                          }),
                     ]);
                   },
                   onTapTow: () {
@@ -105,7 +108,7 @@ class Home extends StatelessWidget {
                                 SizedBox(height: 25),
                                 CircularProgressIndicator(),
                                 SizedBox(height: 25),
-                                Components.MainButton(
+                                CustomButton(
                                     children: [
                                       Text(
                                         "cancel".tr(),
@@ -118,7 +121,7 @@ class Home extends StatelessWidget {
                                     onTap: () {
                                       Navigator.pop(dialogContext!);
                                       dialogContext=null;
-                                    })
+                                    }),
                               ],
                             ),
                           );
@@ -151,7 +154,7 @@ class Home extends StatelessWidget {
                                 SizedBox(height: 25),
                                 CircularProgressIndicator(),
                                 SizedBox(height: 25),
-                                Components.MainButton(
+                                CustomButton(
                                     children: [
                                       Text(
                                         "cancel".tr(),
@@ -164,7 +167,7 @@ class Home extends StatelessWidget {
                                     onTap: () {
                                       Navigator.pop(dialogContext!);
                                       dialogContext=null;
-                                    })
+                                    }),
                               ],
                             ),
                           );
@@ -201,7 +204,7 @@ class Home extends StatelessWidget {
                               SizedBox(height: 25),
                               CircularProgressIndicator(),
                               SizedBox(height: 25),
-                              Components.MainButton(
+                              CustomButton(
                                   children: [
                                     Text(
                                       "cancel".tr(),
@@ -214,7 +217,7 @@ class Home extends StatelessWidget {
                                   onTap: () {
                                     Navigator.pop(dialogContext!);
                                     dialogContext=null;
-                                  })
+                                  }),
                             ],
                           ),
                         );
@@ -241,7 +244,7 @@ class Home extends StatelessWidget {
                   },
                   imageTow: ConstantImage.iconThree)),
           Flexible(
-            child: Components.MainButton(
+            child: CustomButton(
                 children: [
                   Text(
                     "log-out".tr(),

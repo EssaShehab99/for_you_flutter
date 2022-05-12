@@ -19,6 +19,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../constants/constant_values.dart';
 import '../data/providers/user_manager.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/dropdown_input.dart';
 import '../shared/text_input.dart';
 import '../styles/colors_app.dart';
@@ -190,65 +191,66 @@ class AssociatedHospitals extends StatelessWidget {
                 )),
               Flexible(
                 child: StatefulBuilder(builder: (context, setState) {
-                  return Components.MainButton(
-                      children: [
-                        isLoading
-                            ? CircularProgressIndicator(
-                                color: ColorsApp.white,
-                              )
-                            : Text(
-                                isEdit ? "edit".tr() : "sign-up".tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(color: ColorsApp.white),
-                              )
-                      ],
-                      onTap: () {
-                        if (!isLoading) {
-                          setState(() {
-                            isLoading = true;
-                            if (isEdit) {
-                              accountDAO
-                                  .updateHospitals(hospitalManager.hospitalList)
-                                  .whenComplete(() {
-                                setState(() {
-                                  isLoading = false;
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    backgroundColor: Colors.green,
-                                    content: Text(
-                                      "success-edit".tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(
-                                              color: CupertinoColors.white),
-                                    ),
-                                  ));
-                                });
-                              });
-                            } else {
-                              accountDAO
-                                  .setInformation(
-                                      hospitalList:
-                                          hospitalManager.hospitalList,
-                                      checkupList: checkupList,
-                                      questionnaires: questionnaires)
-                                  .whenComplete(() {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Home(),
+                  return
+                    CustomButton(
+                        children: [
+                          isLoading
+                              ? CircularProgressIndicator(
+                            color: ColorsApp.white,
+                          )
+                              : Text(
+                            isEdit ? "edit".tr() : "sign-up".tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(color: ColorsApp.white),
+                          )
+                        ],
+                        isLoading: isLoading,
+                        onTap: () {
+                            setState(() {
+                              isLoading = true;
+                              if (isEdit) {
+                                accountDAO
+                                    .updateHospitals(hospitalManager.hospitalList)
+                                    .whenComplete(() {
+                                  setState(() {
+                                    isLoading = false;
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text(
+                                        "success-edit".tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(
+                                            color: CupertinoColors.white),
+                                      ),
                                     ));
-                                setState(() {
-                                  isLoading = false;
+                                  });
                                 });
-                              });
-                            }
-                          });
-                        }
-                      });
+                              } else {
+                                accountDAO
+                                    .setInformation(
+                                    hospitalList:
+                                    hospitalManager.hospitalList,
+                                    checkupList: checkupList,
+                                    questionnaires: questionnaires)
+                                    .whenComplete(() {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Home(),
+                                      ));
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                });
+                              }
+                            });
+
+                        });
                 }),
               ),
               Flexible(

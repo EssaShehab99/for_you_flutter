@@ -11,6 +11,7 @@ import '../data/network/sign_in_dao.dart';
 import '../data/network/sign_up_dao.dart';
 import '../data/providers/user_manager.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/text_input.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
@@ -134,20 +135,17 @@ class SignIn extends StatelessWidget {
                                 ?.copyWith(color: Colors.red, fontSize: 15),
                           ),
                         ),
-                      Components.MainButton(
+                      CustomButton(
                           children: [
-                            isValidate == null
-                                ? CircularProgressIndicator(
-                                    color: ColorsApp.white,
-                                  )
-                                : Text(
-                                    "sign-in".tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        ?.copyWith(color: ColorsApp.white),
-                                  )
+                            Text(
+                              "sign-in".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: ColorsApp.white),
+                            )
                           ],
+                          isLoading: isValidate == null,
                           onTap: () {
                             if (_formKey.currentState!.validate()) {
                               setState(() {
@@ -155,18 +153,18 @@ class SignIn extends StatelessWidget {
                               });
 
                               final encrypter =
-                                  encrypt.Encrypter(encrypt.AES(User.key));
+                              encrypt.Encrypter(encrypt.AES(User.key));
                               encrypt.Encrypted encrypted = encrypter.encrypt(
                                   passwordController.text,
                                   iv: User.iv);
                               print(encrypted.base64);
                               Provider.of<SignInDAO>(context, listen: false)
                                   .signIn(
-                                      phoneController.text, encrypted.base64)
+                                  phoneController.text, encrypted.base64)
                                   .then((value) {
                                 if (value != null) {
                                   Provider.of<UserManager>(context,
-                                          listen: false)
+                                      listen: false)
                                       .setUser(value);
                                   Config.setUser(
                                       phoneController.text, encrypted.base64);
@@ -183,27 +181,22 @@ class SignIn extends StatelessWidget {
                               });
                             }
                           }),
-                      Components.MainButton(
-                          children: isValidateFinger == null
-                              ? [
-                                  CircularProgressIndicator(
-                                    color: ColorsApp.white,
-                                  )
-                                ]
-                              : [
-                                  Icon(Icons.fingerprint,
-                                      color: ColorsApp.white, size: 35),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    "sign-in-by-finger".tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        ?.copyWith(color: ColorsApp.white),
-                                  )
-                                ],
+                      CustomButton(
+                          children: [
+                            Icon(Icons.fingerprint,
+                                color: ColorsApp.white, size: 35),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "sign-in-by-finger".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(color: ColorsApp.white),
+                            )
+                          ],
+                          isLoading: isValidateFinger == null,
                           onTap: () {
                             setState(() {
                               isValidateFinger = null;
@@ -213,6 +206,7 @@ class SignIn extends StatelessWidget {
                                 isValidateFinger = false;
                               });
                             });
+
                           }),
                     ],
                   ),

@@ -15,6 +15,7 @@ import '../constants/constant_values.dart';
 import '../data/models/questionnaire.dart';
 import '../data/providers/questionnaires_manager.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/dropdown_input.dart';
 import '../shared/locale_switch.dart';
 import '../shared/text_input.dart';
@@ -63,61 +64,62 @@ class QuestionnairesScreen extends StatelessWidget {
                   },
                 )),
           StatefulBuilder(builder: (context, setState) {
-            return Components.MainButton(
-                children: [
-                  isLoading
-                      ? CircularProgressIndicator(
-                    color: ColorsApp.white,
-                  )
-                      : Text(
-                    isEdit ? "edit".tr() : "next".tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(color: ColorsApp.white),
-                  )
-                ],
-                onTap: () {
-                  if (isEdit) {
-                    if(!isLoading){
-                      setState(() {
-                        isLoading = true;
-                      });
-                      Provider.of<AccountDAO>(context, listen: false)
-                          .updateQuestionnaires(
-                          questionnairesManager.questionnaireList)
-                          .whenComplete(() {
+            return
+              CustomButton(
+                  children: [
+                    isLoading
+                        ? CircularProgressIndicator(
+                      color: ColorsApp.white,
+                    )
+                        : Text(
+                      isEdit ? "edit".tr() : "next".tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(color: ColorsApp.white),
+                    )
+                  ],
+                  onTap: () {
+                    if (isEdit) {
+                      if(!isLoading){
                         setState(() {
-                          isLoading = false;
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text(
-                              "success-edit".tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(color: CupertinoColors.white),
-                            ),
-                          ));
+                          isLoading = true;
                         });
                         Provider.of<AccountDAO>(context, listen: false)
-                            .getQuestionnaires()
-                            .then((value) {
-                          questionnairesManager.setItems(value);
-                          questionnairesManager.isCloud = true;
+                            .updateQuestionnaires(
+                            questionnairesManager.questionnaireList)
+                            .whenComplete(() {
+                          setState(() {
+                            isLoading = false;
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text(
+                                "success-edit".tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(color: CupertinoColors.white),
+                              ),
+                            ));
+                          });
+                          Provider.of<AccountDAO>(context, listen: false)
+                              .getQuestionnaires()
+                              .then((value) {
+                            questionnairesManager.setItems(value);
+                            questionnairesManager.isCloud = true;
+                          });
                         });
-                      });
-                    }
-                  } else
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckupsScreen(),
-                        ));
-                });
+                      }
+                    } else
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CheckupsScreen(),
+                          ));
+                  });
           }),
           if (!isEdit)
-            Components.MainButton(
+            CustomButton(
                 children: [
                   Text(
                     "previous".tr(),
@@ -260,7 +262,16 @@ class _QuestionnaireCardState extends State<_QuestionnaireCard> {
               child: Row(
                 children: [
                   Flexible(
-                      child: Components.MainButton(
+                      child:
+                      CustomButton(
+                          children: [
+                            Flexible(
+                                child: Text(hint!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(color: ColorsApp.white)))
+                          ],
                           onTap: () {
                             Components.selectFile().then((value) {
                               if (value != null) {
@@ -271,15 +282,7 @@ class _QuestionnaireCardState extends State<_QuestionnaireCard> {
                                 });
                               }
                             });
-                          },
-                          children: [
-                            Flexible(
-                                child: Text(hint!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        ?.copyWith(color: ColorsApp.white)))
-                          ])),
+                          }),),
                   widget.questionnaire.answerAttach != null
                       ? Flexible(
                       flex: 0,

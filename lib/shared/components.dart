@@ -25,32 +25,6 @@ class Components {
     }
   }
 
-  static Widget MainButton(
-          {List<Widget>? children, GestureTapCallback? onTap}) =>
-      Container(
-        height: 56,
-        margin: EdgeInsets.only(top: ConstantValues.padding * 0.5),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: ColorsApp.primary,
-            boxShadow: [
-              BoxShadow(color: ColorsApp.shadow, blurRadius: 1, spreadRadius: 1)
-            ]),
-        padding: EdgeInsets.only(left: ConstantValues.padding * 0.5),
-        child: InkWell(
-            onTap: onTap,
-            focusColor: ColorsApp.white.withOpacity(0.0),
-            highlightColor: ColorsApp.white.withOpacity(0.0),
-            overlayColor:
-                MaterialStateProperty.all(Colors.white.withOpacity(0.0)),
-            child: Padding(
-              padding: EdgeInsets.all(ConstantValues.padding * 0.5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children ?? [],
-              ),
-            )),
-      );
 
   static Widget homeCard(
           {String? text, String? icon, GestureTapCallback? onTap}) =>

@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../constants/constant_images.dart';
 import '../constants/constant_values.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/locale_switch.dart';
 import '../shared/text_input.dart';
 
@@ -31,6 +32,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
   final _formKey = GlobalKey<FormState>();
   late SignUpDAO signUpDAO;
   bool invalidVerification = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -138,7 +140,8 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                 ),
               )),
           Flexible(
-              child: Components.MainButton(
+              child:
+              CustomButton(
                   children: [
                     Text(
                       "active-account".tr(),
@@ -148,16 +151,15 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                           ?.copyWith(color: ColorsApp.white),
                     )
                   ],
+                  isLoading: isLoading,
                   onTap: () {
-                    // Navigator.push(
-                    //               context,
-                    //               MaterialPageRoute(
-                    //                 builder: (context) =>
-                    //                     QuestionnairesScreen(),
-                    //               ));
+                    setState(() {
+                      isLoading = true;
+                    });
                     signUpDAO.verificationCode(
                         smsCode: verifyCodeController.text,
                         onSuccess: () {
+                          isLoading = false;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -167,11 +169,13 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         },
                         onClick: () {
                           setState(() {
+                            isLoading = false;
                             invalidVerification = false;
                           });
                         },
                         onFailed: () {
                           setState(() {
+                            isLoading = false;
                             invalidVerification = true;
                           });
                         });

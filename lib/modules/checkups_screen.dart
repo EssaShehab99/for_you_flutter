@@ -17,6 +17,7 @@ import '../data/models/checkup.dart';
 import '../data/models/questionnaire.dart';
 import '../data/providers/checkup_manager.dart';
 import '../shared/components.dart';
+import '../shared/custom_button.dart';
 import '../shared/locale_switch.dart';
 import 'associated_hospitals.dart';
 
@@ -58,54 +59,56 @@ class CheckupsScreen extends StatelessWidget {
               checkup: item,
             )),
           StatefulBuilder(
-            builder: (context, setState) => Components.MainButton(
-                children: [
-                  isLoading
-                      ? CircularProgressIndicator(
-                          color: ColorsApp.white,
-                        )
-                      : Text(
-                          isEdit ? "edit".tr() : "next".tr(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(color: ColorsApp.white),
-                        )
-                ],
-                onTap: () {
-                  if (isEdit) {
-                    if(!isLoading){
-                      setState(() {
-                        isLoading = true;
-                      });
-                      Provider.of<AccountDAO>(context, listen: false)
-                          .updateCheckups(checkupManager.checkupList)
-                          .whenComplete(() {
+            builder: (context, setState) =>
+                CustomButton(
+                    children: [
+                      isLoading
+                          ? CircularProgressIndicator(
+                        color: ColorsApp.white,
+                      )
+                          : Text(
+                        isEdit ? "edit".tr() : "next".tr(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(color: ColorsApp.white),
+                      )
+                    ],
+                    isLoading: isLoading,
+                    onTap: () {
+                      if (isEdit) {
                         setState(() {
-                          isLoading = false;
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text(
-                              "success-edit".tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(color: CupertinoColors.white),
-                            ),
-                          ));
+                          isLoading = true;
                         });
-                      });
-                    }
-                  } else
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AssociatedHospitals(),
-                        ));
-                }),
+                        Provider.of<AccountDAO>(context, listen: false)
+                            .updateCheckups(checkupManager.checkupList)
+                            .whenComplete(() {
+                          setState(() {
+                            isLoading = false;
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text(
+                                "success-edit".tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(color: CupertinoColors.white),
+                              ),
+                            ));
+                          });
+                        });
+
+                      } else
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AssociatedHospitals(),
+                            ));
+                    }),
           ),
           if (!isEdit)
-            Components.MainButton(
+
+            CustomButton(
                 children: [
                   Text(
                     "previous".tr(),
@@ -116,8 +119,8 @@ class CheckupsScreen extends StatelessWidget {
                   )
                 ],
                 onTap: () {
-                  Navigator.pop(context);
-                }),
+                  Navigator.pop(context);}),
+
         ]),
       ),
     );
@@ -147,11 +150,7 @@ class _CheckupCardState extends State<_CheckupCard> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Components.MainButton(
-                    onTap: () async {
-                      if (selectFile != null) await selectFile();
-                      setStateChild(() {});
-                    },
+                CustomButton(
                     children: [
                       Icon(
                         Icons.file_copy,
@@ -172,22 +171,12 @@ class _CheckupCardState extends State<_CheckupCard> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ]),
-                Components.MainButton(
+                    ],
                     onTap: () async {
-                      if(text==null)  {
-                        final DateTime? selected = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2010),
-                          lastDate: DateTime(2025),
-                        );
-                        if (selected != null)
-                          setStateChild(() {
-                            selectedDate = selected;
-                          });
-                      }
-                    },
+                      if (selectFile != null) await selectFile();
+                      setStateChild(() {});
+                    }),
+                CustomButton(
                     children: [
                       Icon(
                         Icons.date_range,
@@ -205,7 +194,21 @@ class _CheckupCardState extends State<_CheckupCard> {
                             .bodyText1
                             ?.copyWith(color: ColorsApp.white),
                       ),
-                    ]),
+                    ],
+                    onTap: () async {
+                      if(text==null)  {
+                        final DateTime? selected = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2010),
+                          lastDate: DateTime(2025),
+                        );
+                        if (selected != null)
+                          setStateChild(() {
+                            selectedDate = selected;
+                          });
+                      }
+                    }),
                 SizedBox(
                   height: 20,
                 ),
