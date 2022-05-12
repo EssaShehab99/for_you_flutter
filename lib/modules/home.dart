@@ -39,107 +39,167 @@ class Home extends StatelessWidget {
     HospitalManager hospitalManager =
         Provider.of<HospitalManager>(context);
     return SafeArea(
-      child: Scaffold(
+      child: WillPopScope(
+        onWillPop: () {
 
-        body: Components.bodyScreens([
-          Flexible(
-              child: Center(
-            child: Text(
-              "welcome".tr() +
-                  " " +
-                  Provider.of<UserManager>(context, listen: false)
-                      .getUser!
-                      .name,
-              style: Theme.of(context).textTheme.headline1,
-            ),
-          )),
-          Flexible(
-              child: SizedBox(
-            height: 50,
-          )),
-          Flexible(
-              child: buildColumn(
-                  onTapOne: () {
-                    Components.showCustomDialog(context: context, children: [
-                      Text(
-                        "beneficiaries-message".tr(),
-                        style: Theme.of(context).textTheme.headline1,
-                        textAlign: TextAlign.justify,
-                      ),
-                      CustomButton(
-                          children: [
-                            Text(
-                              "ok".tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(color: ColorsApp.white),
-                            )
-                          ],
-                          onTap: () {
-                            Navigator.pop(context);
-                          }),
-                    ]);
-                  },
-                  onTapTow: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUp(operationType: OperationType.Edit),
-                        ));
-                  },
-                  textOne: "beneficiaries".tr(),
-                  imageOne: ConstantImage.iconFive,
-                  textTwo: "personal-information".tr(),
-                  imageTow: ConstantImage.iconFour)),
-          Flexible(
-              child: buildColumn(
-                  onTapTow: () async {
-                     BuildContext? dialogContext;
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (ctx) {
-                          dialogContext = ctx;
-                          return AlertDialog(
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: 25),
-                                CircularProgressIndicator(),
-                                SizedBox(height: 25),
-                                CustomButton(
-                                    children: [
-                                      Text(
-                                        "cancel".tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            ?.copyWith(color: ColorsApp.white),
-                                      )
-                                    ],
-                                    onTap: () {
-                                      Navigator.pop(dialogContext!);
-                                      dialogContext=null;
-                                    }),
-                              ],
-                            ),
-                          );
-                        });
-                    accountDAO.getQuestionnaires().then((value) {
-                      if(dialogContext!=null){
-                        Navigator.pop(dialogContext!);
-                        questionnairesManager.setItems(value);
-                        questionnairesManager.isCloud = true;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => QuestionnairesScreen()));
-                      }
-                    });
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignIn(),
+              ));
+          return Future.value(false);
+        },
+        child: Scaffold(
 
-                    // Navigator.push(context,MaterialPageRoute(builder: (context) => QuestionnairesScreen()));
-                  },
+          body: Components.bodyScreens([
+            Flexible(
+                child: Center(
+              child: Text(
+                "welcome".tr() +
+                    " " +
+                    Provider.of<UserManager>(context, listen: false)
+                        .getUser!
+                        .name,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            )),
+            Flexible(
+                child: SizedBox(
+              height: 50,
+            )),
+            Flexible(
+                child: buildColumn(
+                    onTapOne: () {
+                      Components.showCustomDialog(context: context, children: [
+                        Text(
+                          "beneficiaries-message".tr(),
+                          style: Theme.of(context).textTheme.headline1,
+                          textAlign: TextAlign.justify,
+                        ),
+                        CustomButton(
+                            children: [
+                              Text(
+                                "ok".tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(color: ColorsApp.white),
+                              )
+                            ],
+                            onTap: () {
+                              Navigator.pop(context);
+                            }),
+                      ]);
+                    },
+                    onTapTow: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUp(operationType: OperationType.Edit),
+                          ));
+                    },
+                    textOne: "beneficiaries".tr(),
+                    imageOne: ConstantImage.iconFive,
+                    textTwo: "personal-information".tr(),
+                    imageTow: ConstantImage.iconFour)),
+            Flexible(
+                child: buildColumn(
+                    onTapTow: () async {
+                       BuildContext? dialogContext;
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (ctx) {
+                            dialogContext = ctx;
+                            return AlertDialog(
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(height: 25),
+                                  CircularProgressIndicator(),
+                                  SizedBox(height: 25),
+                                  CustomButton(
+                                      children: [
+                                        Text(
+                                          "cancel".tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(color: ColorsApp.white),
+                                        )
+                                      ],
+                                      onTap: () {
+                                        Navigator.pop(dialogContext!);
+                                        dialogContext=null;
+                                      }),
+                                ],
+                              ),
+                            );
+                          });
+                      accountDAO.getQuestionnaires().then((value) {
+                        if(dialogContext!=null){
+                          Navigator.pop(dialogContext!);
+                          questionnairesManager.setItems(value);
+                          questionnairesManager.isCloud = true;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QuestionnairesScreen()));
+                        }
+                      });
+
+                      // Navigator.push(context,MaterialPageRoute(builder: (context) => QuestionnairesScreen()));
+                    },
+                    onTapOne: () {
+                      BuildContext? dialogContext;
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (ctx) {
+                            dialogContext = ctx;
+                            return AlertDialog(
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(height: 25),
+                                  CircularProgressIndicator(),
+                                  SizedBox(height: 25),
+                                  CustomButton(
+                                      children: [
+                                        Text(
+                                          "cancel".tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(color: ColorsApp.white),
+                                        )
+                                      ],
+                                      onTap: () {
+                                        Navigator.pop(dialogContext!);
+                                        dialogContext=null;
+                                      }),
+                                ],
+                              ),
+                            );
+                          });
+                      accountDAO.getCheckups().then((value) {
+                        if(dialogContext!=null){
+                          Navigator.pop(dialogContext!);
+                          checkupManager.setItems(value);
+                          checkupManager.isCloud = true;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheckupsScreen()));
+                        }
+                      });
+                    },
+                    textOne: "medical-examinations".tr(),
+                    imageOne: ConstantImage.iconOne,
+                    textTwo: "medical-history".tr(),
+                    imageTow: ConstantImage.iconSix)),
+            Flexible(
+                child: buildColumn(
                   onTapOne: () {
                     BuildContext? dialogContext;
                     showDialog(
@@ -172,99 +232,50 @@ class Home extends StatelessWidget {
                             ),
                           );
                         });
-                    accountDAO.getCheckups().then((value) {
+                    accountDAO.getHospitals().then((value) {
                       if(dialogContext!=null){
                         Navigator.pop(dialogContext!);
-                        checkupManager.setItems(value);
-                        checkupManager.isCloud = true;
+                        value.forEach((element) {
+                          hospitalManager.checkHospital(element.id,element.location,element.name);
+                        });
+                        hospitalManager.isCloud = true;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CheckupsScreen()));
+                                builder: (context) => AssociatedHospitals()));
                       }
                     });
                   },
-                  textOne: "medical-examinations".tr(),
-                  imageOne: ConstantImage.iconOne,
-                  textTwo: "medical-history".tr(),
-                  imageTow: ConstantImage.iconSix)),
-          Flexible(
-              child: buildColumn(
-                onTapOne: () {
-                  BuildContext? dialogContext;
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (ctx) {
-                        dialogContext = ctx;
-                        return AlertDialog(
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 25),
-                              CircularProgressIndicator(),
-                              SizedBox(height: 25),
-                              CustomButton(
-                                  children: [
-                                    Text(
-                                      "cancel".tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(color: ColorsApp.white),
-                                    )
-                                  ],
-                                  onTap: () {
-                                    Navigator.pop(dialogContext!);
-                                    dialogContext=null;
-                                  }),
-                            ],
-                          ),
-                        );
-                      });
-                  accountDAO.getHospitals().then((value) {
-                    if(dialogContext!=null){
-                      Navigator.pop(dialogContext!);
-                      value.forEach((element) {
-                        hospitalManager.checkHospital(element.id,element.location,element.name);
-                      });
-                      hospitalManager.isCloud = true;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AssociatedHospitals()));
-                    }
-                  });
-                },
-                  textOne: "hospital-network".tr(),
-                  imageOne: ConstantImage.iconFive,
-                  textTwo: "phone".tr(),
-                  onTapTow: (){
-                    Components.launchUrl("920022776",call: true);
-                  },
-                  imageTow: ConstantImage.iconThree)),
-          Flexible(
-            child: CustomButton(
-                children: [
-                  Text(
-                    "log-out".tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(color: ColorsApp.white),
-                  )
-                ],
-                onTap: () {
-                  Provider.of<SignUpDAO>(context, listen: false).auth.signOut();
-                  Provider.of<UserManager>(context, listen: false).signOut();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignIn(),
-                      ));
-                }),
-          )
-        ]),
+                    textOne: "hospital-network".tr(),
+                    imageOne: ConstantImage.iconFive,
+                    textTwo: "phone".tr(),
+                    onTapTow: (){
+                      Components.launchUrl("920022776",call: true);
+                    },
+                    imageTow: ConstantImage.iconThree)),
+            Flexible(
+              child: CustomButton(
+                  children: [
+                    Text(
+                      "log-out".tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(color: ColorsApp.white),
+                    )
+                  ],
+                  onTap: () {
+                    Provider.of<SignUpDAO>(context, listen: false).auth.signOut();
+                    Provider.of<UserManager>(context, listen: false).signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignIn(),
+                        ));
+                  }),
+            )
+          ]),
+        ),
       ),
     );
   }

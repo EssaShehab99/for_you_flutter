@@ -67,11 +67,7 @@ class QuestionnairesScreen extends StatelessWidget {
             return
               CustomButton(
                   children: [
-                    isLoading
-                        ? CircularProgressIndicator(
-                      color: ColorsApp.white,
-                    )
-                        : Text(
+                    Text(
                       isEdit ? "edit".tr() : "next".tr(),
                       style: Theme.of(context)
                           .textTheme

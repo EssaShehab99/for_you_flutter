@@ -14,10 +14,14 @@ import 'package:for_you_flutter/data/providers/questionnaires_manager.dart';
 import 'package:for_you_flutter/shared/map_card.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_platform_interface/location_platform_interface.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:encrypt/encrypt.dart' as encrypt;
+
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../constants/constant_values.dart';
+import '../data/models/user.dart';
 import '../data/providers/user_manager.dart';
+import '../data/setting/config.dart';
 import '../shared/components.dart';
 import '../shared/custom_button.dart';
 import '../shared/dropdown_input.dart';
@@ -194,11 +198,7 @@ class AssociatedHospitals extends StatelessWidget {
                   return
                     CustomButton(
                         children: [
-                          isLoading
-                              ? CircularProgressIndicator(
-                            color: ColorsApp.white,
-                          )
-                              : Text(
+                         Text(
                             isEdit ? "edit".tr() : "sign-up".tr(),
                             style: Theme.of(context)
                                 .textTheme
@@ -238,6 +238,13 @@ class AssociatedHospitals extends StatelessWidget {
                                     checkupList: checkupList,
                                     questionnaires: questionnaires)
                                     .whenComplete(() {
+                                  final encrypter =
+                                  encrypt.Encrypter(encrypt.AES(User.key));
+                                  encrypt.Encrypted encrypted = encrypter.encrypt(
+                                      accountDAO.userManager!.getUser!.password,
+                                      iv: User.iv);
+                                  Config.setUser(
+                                      accountDAO.userManager!.getUser!.phone, encrypted.base64);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

@@ -169,7 +169,6 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         },
                         onClick: () {
                           setState(() {
-                            isLoading = false;
                             invalidVerification = false;
                           });
                         },

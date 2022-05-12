@@ -87,5 +87,7 @@
   "select-file": "Select File",
   "open": "Open",
   "km": "KM",
-  "exist-phone": "Exist Phone Number"
+  "exist-phone": "Exist Phone Number",
+  "are-sure": "Are you sure ?",
+  "do-you-exit": "Do you want to exit ?"
 }
