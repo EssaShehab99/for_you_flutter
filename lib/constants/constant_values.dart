@@ -19,7 +19,13 @@ class ConstantValues{
     Questionnaire(id:7,question: "q-8".tr(),isLocale: true, questionnaireType: QuestionnaireType.dropdown,hint: "shortness-breath".tr(),items: ["yes".tr(),"no".tr(),"often".tr(),"rarely".tr()]),
     Questionnaire(id:8,question: "q-9".tr(),isLocale: true, questionnaireType: QuestionnaireType.none,),
     Questionnaire(id:9,question: "q-10".tr(),isLocale: true, questionnaireType: QuestionnaireType.none,),
-    Questionnaire(id:10,question: "q-11".tr(),isLocale: true, questionnaireType: QuestionnaireType.dropdown,hint: "shortness-breath".tr(),items: ["TODO".tr(),]),
+    Questionnaire(id:10,question: "q-11".tr(),isLocale: true, questionnaireType: QuestionnaireType.dropdown,hint: "shortness-breath".tr(),items: [
+      "q-11-l-1".tr(),
+      "q-11-l-2".tr(),
+      "q-11-l-3".tr(),
+      "q-11-l-4".tr(),
+      "q-11-l-5".tr(),
+    ]),
     Questionnaire(id:11,question: "q-12".tr(),isLocale: true, questionnaireType: QuestionnaireType.none,),
   ];
   static List<Checkup>  checkupList=[

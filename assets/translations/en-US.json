@@ -89,5 +89,10 @@
   "km": "KM",
   "exist-phone": "Exist Phone Number",
   "are-sure": "Are you sure ?",
-  "do-you-exit": "Do you want to exit ?"
+  "do-you-exit": "Do you want to exit ?",
+  "q-11-l-1": "Diabetes",
+  "q-11-l-2": "Pressure",
+  "q-11-l-3": "Cancer",
+  "q-11-l-4": "Heart disease",
+  "q-11-l-5": "Anemia"
 }
