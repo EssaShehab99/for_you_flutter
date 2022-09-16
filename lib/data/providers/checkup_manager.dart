@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:for_you_flutter/data/models/user.dart';
 
 import '../models/checkup.dart';
 

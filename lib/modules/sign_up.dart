@@ -1,26 +1,20 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:for_you_flutter/data/models/user.dart';
-import 'package:for_you_flutter/data/network/sign_up_dao.dart';
-import 'package:for_you_flutter/data/providers/user_manager.dart';
-import 'package:for_you_flutter/modules/questionnaires_screen.dart';
-import 'package:for_you_flutter/modules/verify_phone.dart';
-import 'package:for_you_flutter/shared/dropdown_input.dart';
-import 'package:for_you_flutter/styles/colors_app.dart';
+import '/data/models/user.dart';
+import '/data/network/sign_up_dao.dart';
+import '/data/providers/user_manager.dart';
+import '/modules/questionnaires_screen.dart';
+import '/modules/verify_phone.dart';
+import '/shared/dropdown_input.dart';
+import '/styles/colors_app.dart';
 import 'package:provider/provider.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:easy_localization/easy_localization.dart' as localized;
 
-import '../constants/constant_images.dart';
-import '../constants/constant_values.dart';
-import '../data/network/sign_in_dao.dart';
-import '../shared/components.dart';
-import '../shared/custom_button.dart';
-import '../shared/locale_switch.dart';
-import '../shared/text_input.dart';
+import '/constants/constant_values.dart';
+import '/data/network/sign_in_dao.dart';
+import '/shared/components.dart';
+import '/shared/custom_button.dart';
+import '/shared/text_input.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({Key? key,required this.operationType}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:for_you_flutter/data/models/user.dart' as UserModel;
-import 'package:for_you_flutter/data/providers/user_manager.dart';
+import '/data/models/user.dart' as UserModel;
+import '/data/providers/user_manager.dart';
 
 class SignUpDAO extends ChangeNotifier {
   SignUpDAO({this.user});

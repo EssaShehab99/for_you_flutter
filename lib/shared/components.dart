@@ -1,19 +1,17 @@
-// import 'dart:io'as IO;
-
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:for_you_flutter/constants/constant_images.dart';
-import 'package:for_you_flutter/constants/constant_values.dart';
-import 'package:for_you_flutter/data/providers/user_manager.dart';
+import '/constants/constant_images.dart';
+import '/constants/constant_values.dart';
+import '/data/providers/user_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../styles/colors_app.dart';
+import '/styles/colors_app.dart';
 import 'locale_switch.dart';
 
 class Components {

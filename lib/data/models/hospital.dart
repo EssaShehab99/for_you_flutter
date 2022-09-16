@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:for_you_flutter/constants/constant_values.dart';
+import '/constants/constant_values.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Hospital {

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:for_you_flutter/data/setting/config.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import '../styles/colors_app.dart';
+import '/styles/colors_app.dart';
 
 class LocaleSwitch extends StatelessWidget {
   const LocaleSwitch({Key? key}) : super(key: key);

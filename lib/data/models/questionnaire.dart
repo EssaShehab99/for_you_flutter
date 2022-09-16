@@ -1,4 +1,4 @@
-import 'package:for_you_flutter/constants/constant_values.dart';
+import '/constants/constant_values.dart';
 
 enum QuestionnaireType { none, field, button, dropdown }
 

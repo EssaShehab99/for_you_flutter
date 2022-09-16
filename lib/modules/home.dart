@@ -1,29 +1,21 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:for_you_flutter/data/network/account_dao.dart';
-import 'package:for_you_flutter/data/providers/user_manager.dart';
-import 'package:for_you_flutter/modules/associated_hospitals.dart';
-import 'package:for_you_flutter/modules/questionnaires_screen.dart';
-import 'package:for_you_flutter/modules/sign_in.dart';
-import 'package:for_you_flutter/modules/sign_up.dart';
-import 'package:for_you_flutter/styles/colors_app.dart';
+import '/data/network/account_dao.dart';
+import '/data/providers/user_manager.dart';
+import '/modules/associated_hospitals.dart';
+import '/modules/questionnaires_screen.dart';
+import '/modules/sign_in.dart';
+import '/modules/sign_up.dart';
+import '/styles/colors_app.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/constant_images.dart';
-import '../constants/constant_values.dart';
-import '../data/models/checkup.dart';
-import '../data/models/questionnaire.dart';
-import '../data/network/sign_up_dao.dart';
-import '../data/providers/checkup_manager.dart';
-import '../data/providers/hospitals_manager.dart';
-import '../data/providers/questionnaires_manager.dart';
-import '../data/setting/config.dart';
-import '../shared/components.dart';
-import '../shared/custom_button.dart';
-import '../shared/locale_switch.dart';
+import '/constants/constant_images.dart';
+import '/data/network/sign_up_dao.dart';
+import '/data/providers/checkup_manager.dart';
+import '/data/providers/hospitals_manager.dart';
+import '/data/providers/questionnaires_manager.dart';
+import '/shared/components.dart';
+import '/shared/custom_button.dart';
 import 'checkups_screen.dart';
 
 class Home extends StatelessWidget {

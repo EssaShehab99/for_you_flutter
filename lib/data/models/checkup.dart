@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:for_you_flutter/constants/constant_values.dart';
+import '/constants/constant_values.dart';
 
 class FileAndDate {
   DateTime dateTime;

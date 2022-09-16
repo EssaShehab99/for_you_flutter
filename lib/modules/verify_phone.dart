@@ -1,23 +1,14 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart' as localized;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:for_you_flutter/data/models/user.dart';
 import 'package:for_you_flutter/data/network/sign_up_dao.dart';
 import 'package:for_you_flutter/data/providers/user_manager.dart';
 import 'package:for_you_flutter/modules/questionnaires_screen.dart';
-import 'package:for_you_flutter/shared/dropdown_input.dart';
 import 'package:for_you_flutter/styles/colors_app.dart';
 import 'package:provider/provider.dart';
-
-import '../constants/constant_images.dart';
-import '../constants/constant_values.dart';
-import '../shared/components.dart';
-import '../shared/custom_button.dart';
-import '../shared/locale_switch.dart';
-import '../shared/text_input.dart';
+import '/shared/components.dart';
+import '/shared/custom_button.dart';
+import '/shared/text_input.dart';
 
 class VerifyPhone extends StatefulWidget {
   VerifyPhone({Key? key}) : super(key: key);

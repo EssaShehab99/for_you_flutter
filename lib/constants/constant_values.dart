@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../data/models/checkup.dart';
-import '../data/models/hospital.dart';
-import '../data/models/questionnaire.dart';
+import '/data/models/checkup.dart';
+import '/data/models/hospital.dart';
+import '/data/models/questionnaire.dart';
 
 class ConstantValues{
   static double padding=20.0;

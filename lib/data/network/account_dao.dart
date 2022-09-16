@@ -1,14 +1,13 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:for_you_flutter/constants/constant_values.dart';
-import 'package:for_you_flutter/data/models/questionnaire.dart';
-import 'package:for_you_flutter/data/providers/user_manager.dart';
+import '/constants/constant_values.dart';
+import '/data/models/questionnaire.dart';
+import '/data/providers/user_manager.dart';
 
-import '../models/checkup.dart';
-import '../models/hospital.dart';
+import '/data/models/checkup.dart';
+import '/data/models/hospital.dart';
 
 class AccountDAO extends ChangeNotifier {
   late DocumentReference documentReference;

@@ -1,4 +1,4 @@
-package com.example.for_you_flutter
+package com.essashehab99.foryou
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterFragmentActivity

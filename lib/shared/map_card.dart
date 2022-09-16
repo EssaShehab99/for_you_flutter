@@ -4,14 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:for_you_flutter/constants/constant_images.dart';
-import 'package:for_you_flutter/data/providers/hospitals_manager.dart';
-import 'package:for_you_flutter/shared/components.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class MapCard extends StatefulWidget {
   const MapCard({Key? key, this.onTapMap, required this.initialPosition})
